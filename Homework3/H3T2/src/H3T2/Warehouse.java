@@ -4,8 +4,8 @@ package H3T2;
 public class Warehouse {
     public static void main(String[] args) {
 
-        StorageArea.ReceptionArea reception = new StorageArea.ReceptionArea();
-        StorageArea.ShippingArea shipping = new StorageArea.ShippingArea();
+        StorageArea.ReceptionArea reception = new StorageArea.ReceptionArea(38);
+        StorageArea.ShippingArea shipping = new StorageArea.ShippingArea(45);
 
         StorageArea.AllArea all = new StorageArea.AllArea(  // уточнить
                 reception.getLoad(),

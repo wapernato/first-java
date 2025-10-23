@@ -23,18 +23,17 @@ class StorageArea {
 
             public AllArea(int receptionLoad, int shippingLoad) {
                 this.receptionLoad = receptionLoad;
-                this.shippingLoad  = shippingLoad;
+                this.shippingLoad = shippingLoad;
             }
 
             public int AllLoad() {
-            if(receptionLoad + shippingLoad < 200){
-                return receptionLoad + shippingLoad;
-            }
-            else {
-                System.out.println("Error");
-                return -1;
+                if (receptionLoad + shippingLoad < 200) {
+                    return receptionLoad + shippingLoad;
+                } else {
+                    System.out.println("Error");
+                    return -1;
 
+                }
             }
         }
-
     }
