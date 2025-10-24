@@ -3,14 +3,15 @@ package untitled;
 
 public class Main {
     public static void main(String[] args) {
-        Laptop.ILineStep body = new Laptop.BodyStep();
-        Laptop.ILineStep board = new Laptop.MotherboardStep();
-        Laptop.ILineStep screen = new Laptop.ScreenStep();
+        Tank.ILineStep body = new Tank.BodyStep();
+        Tank.ILineStep tower = new Tank.TowerStep();
+        Tank.ILineStep engine = new Tank.EngineStep();
 
-        Laptop.IAssemblyLine line = new Laptop.AssemblyLine(body, board, screen);
-        Laptop.Product laptop = new Laptop.Product();
+        Tank.IAssemblyLine line = new Tank.AssemblyLine(body, engine, tower);
+        Tank.Product Tank = new Tank.Product();
 
-        line.assembleProduct(laptop);
+        line.assembleProduct(Tank);
+
 
 
     }
