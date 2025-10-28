@@ -1,0 +1,11 @@
+.idea/
+*.iml
+*.class
+out/
+bin/
+target/
+build/
+.gradle/
+.mvn/
+.vscode/
+.DS_Store
