@@ -7,9 +7,7 @@ import com.senla.model.Assignment;
 import java.util.Set;
 
 
-/**
- * Контракт заселения/выселения гостей.
- */
+
 public interface CheckInService {
     boolean checkIn(String roomNumber, String guestName);
     void assignAllPairwise();

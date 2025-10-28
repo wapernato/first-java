@@ -8,9 +8,7 @@ import com.senla.model.RoomStatus;
 import java.util.Set;
 
 
-/**
- * Контракт для работы с номерами отеля.
- */
+
 public interface Rooms {
     Set<String> getRoomsNumbers();
     void addRoom(String number);
