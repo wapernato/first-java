@@ -9,3 +9,16 @@ build/
 .mvn/
 .vscode/
 .DS_Store
+.idea/
+*.iml
+*.ipr
+*.iws
+*.class
+out/
+bin/
+target/
+build/
+.gradle/
+.mvn/
+.vscode/
+.DS_Store
