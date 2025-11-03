@@ -46,9 +46,9 @@ public class AppDemo {
 
         rooms.setRoomCapacity("101", 3);
 
-        guests.addHuman("101","Иван");
-        guests.addHuman("101","Анна");
-        guests.addHuman("102","Мария");
+        //guests.addHuman("101","Иван");
+        //guests.addHuman("101","Анна");
+        //guests.addHuman("102","Мария");
         System.out.println("-----------------------------------------");
         guests.freeRooms();
         System.out.println("-----------------------------------------");
@@ -59,6 +59,10 @@ public class AppDemo {
         //sorter.sortRoomByCapacity(rooms);
         System.out.println(guests. AllWhoLivesInRooms()); // кто в какой комнате живет
         System.out.println("-----------------------------------------");
+        guests.removePeopleFromRoom("101"); // Удаление людей их комнат
+        System.out.println("-----------------------------------------");
+        System.out.println(guests.AllWhoLivesInRooms()); // Провера всех, кто живет в какой-либо комнате
+        guests.CountFreeRooms();
         //System.out.println(service.checkIn("101", "Иван")); //  проверка на "правда ли "Иван" живет в комнате"
         //System.out.println(rooms.getRoomsNumbers()); // все комнаты
 

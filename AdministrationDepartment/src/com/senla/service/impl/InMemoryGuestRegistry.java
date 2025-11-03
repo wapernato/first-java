@@ -5,6 +5,8 @@ import com.senla.model.OccupancyStatus;
 import com.senla.model.Room;
 import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 
 import java.util.*;
@@ -25,7 +27,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
 
 
     @Override
-    public void addHuman(String roomId, String human) {
+    public void addHuman(String roomId, String human, LocalDate dateCheckIn, LocalDate dateEvicion) {
 
         if (rooms.getRoom(roomId) == null) {
             System.out.println("Комнаты " + roomId + " не сущетсвует");
@@ -85,6 +87,14 @@ public class InMemoryGuestRegistry implements GuestRegistry {
     }
 
     public void removePeopleFromRoom(String roomId){
-
+        //Room r = rooms.getRoom(roomId);
+        List<String> list = peopleByRoom.get(roomId);
+        if (list.isEmpty()) {
+            System.out.println("В комнате никого нету");
+            return;
+        }
+        list.clear();
+        Room r = rooms.getRoom(roomId);
+        r.setOccupancyStatus(OccupancyStatus.VACANT);
     }
 }
