@@ -1,4 +1,4 @@
 package com.senla.model;
 
 
-public enum RoomStatus { AVAILABLE, MAINTENANCE }
+public enum RoomStatus { AVAILABLE, MAINTENANCE, SERVICE }
