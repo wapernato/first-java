@@ -18,9 +18,6 @@ import java.util.stream.Collectors;
  */
 public class InMemoryGuestRegistry implements GuestRegistry {
 
-    /** Часовой пояс отеля (для «сегодня»). При необходимости смените. */
-    private static final ZoneId HOTEL_ZONE = ZoneId.of("Europe/Warsaw");
-
     /** Описание одного проживания (бронь для одного гостя). */
     private static final class Stay {
         final String roomId;
@@ -37,7 +34,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
             this.start = start;
             this.end = end;
         }
-
+        // проверяет живут ли в номере в данный момент
         boolean activeOn(LocalDate date) {
             // start <= date < end
             return !date.isBefore(start) && date.isBefore(end);
@@ -61,10 +58,11 @@ public class InMemoryGuestRegistry implements GuestRegistry {
     }
 
     private LocalDate today() {
-        return LocalDate.now(HOTEL_ZONE);
+        return LocalDate.now();
     }
 
     /** Пересчитать и выставить статус занятости номера на сегодня. */
+    // данный метод проверяет, есть ли люди в списке staysByRoom, и если есть, то меняет статус комнаты и применяет метод activeOn(today)
     private void refreshOccupancyToday(String roomId) {
         Room room = rooms.getRoom(roomId);
         if (room == null) return;
@@ -111,6 +109,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
             System.out.println("Длительность проживания (ночей) должна быть > 0");
             return;
         }
+
 
         LocalDate checkOut = checkIn.plusDays(nights); // [checkIn, checkOut)
         List<Stay> stays = staysByRoom.computeIfAbsent(roomId, k -> new ArrayList<>());
@@ -215,7 +214,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
     }
 
     @Override
-    public int countActiveGuestsToday() {
+    public int countActiveGuestsToday() { // ================================================================ //
         LocalDate today = today();
         return (int) staysByRoom.values().stream()
                 .flatMap(List::stream)

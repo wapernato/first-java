@@ -5,6 +5,10 @@ public interface SortStats {
     void sortRoomByCapacity(Rooms rooms);
     void sortRoomByPrice(Rooms rooms);
 
+    void freeSortRoomByStars(Rooms rooms);
+    void freeSortRoomByCapacity(Rooms rooms);
+    void freeSortRoomByPrice(Rooms rooms);
+
     // (1) «Список постояльцев и их номеров (сортировка: имя, затем дата выезда)»
     void sortGuestsByAlphabetThenCheckout(GuestRegistry guests);
 

@@ -1,6 +1,7 @@
 package com.senla.service.impl;
 
 
+import com.senla.model.OccupancyStatus;
 import com.senla.model.Room;
 import com.senla.model.RoomStatus;
 import com.senla.service.Rooms;
@@ -16,7 +17,17 @@ public class InMemoryRooms implements Rooms {
     public Set<String> getRoomsNumbers() {
         return Collections.unmodifiableSet(rooms.keySet());
     }
-
+    @Override
+    public Set<String> freeRoomsNumber(){
+        Set<String> out = new HashSet<>();
+        for(String num : getRoomsNumbers()){
+            Room r = getRoom(num);
+            if(r != null && r.occupancyStatus() == OccupancyStatus.VACANT && r.status() == RoomStatus.AVAILABLE){
+                out.add(num);
+            }
+        }
+        return out;
+    }
 
     // --------------------check this--------------------------
     @Override

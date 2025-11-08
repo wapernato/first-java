@@ -24,7 +24,8 @@ public class CheckInSortStatus implements SortStats {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
                     r.number(), r.stars(), r.capacity(), r.price(), r.status());
 
-        } }
+        }
+    }
     @Override
     public void sortRoomByCapacity(Rooms rooms){
         List<Room> snapshot = new ArrayList<>();
@@ -61,7 +62,59 @@ public class CheckInSortStatus implements SortStats {
                     r.number(), r.stars(), r.capacity(), r.price(), r.status());
         }
     }
+    @Override
+    public void freeSortRoomByStars(Rooms rooms){
+        List<Room> snapshot = new ArrayList<>();
+        for (String num : rooms.freeRoomsNumber()){
+            Room r = rooms.getRoom(num);
+            if (r != null) snapshot.add(r);
+        }
 
+        snapshot.sort(
+                Comparator.comparingDouble(Room::stars).reversed()
+        );
+
+        for (Room r : snapshot) {
+            System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
+                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+        }
+    }
+
+    @Override
+    public void freeSortRoomByPrice(Rooms rooms){
+        List<Room> snapshot = new ArrayList<>();
+        for (String num : rooms.freeRoomsNumber()){
+            Room r = rooms.getRoom(num);
+            if (r != null) snapshot.add(r);
+        }
+
+        snapshot.sort(
+                Comparator.comparingDouble(Room::price)
+        );
+
+        for (Room r : snapshot) {
+            System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
+                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+        }
+    }
+
+    @Override
+    public void freeSortRoomByCapacity(Rooms rooms) {
+        List<Room> snapshot = new ArrayList<>();
+        for (String num : rooms.freeRoomsNumber()) {
+            Room r = rooms.getRoom(num);
+            if (r != null) snapshot.add(r);
+        }
+        snapshot.sort(
+                Comparator.comparingInt(Room::capacity)
+        );
+
+        for (Room r : snapshot) {
+            System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
+                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+
+        }
+    }
     // (1)
     @Override
     public void sortGuestsByAlphabetThenCheckout(GuestRegistry guests) {

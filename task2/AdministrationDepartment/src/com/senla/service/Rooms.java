@@ -12,6 +12,8 @@ import java.util.Set;
 
 public interface Rooms {
     Set<String> getRoomsNumbers();
+    Set<String> freeRoomsNumber();
+
     //List<String> freeRooms();
     void addRoom(String number, int capacity, int stars);
     int count();

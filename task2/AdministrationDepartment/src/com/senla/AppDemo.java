@@ -33,57 +33,24 @@ import java.util.stream.Collectors;
  */
 public class AppDemo {
 
-    // ---------- ВСПОМОГАТЕЛЬНОЕ: печать списков свободных номеров с сортировкой ----------
-    private static List<Room> freeRoomsSnapshot(Rooms rooms) {
-        List<Room> out = new ArrayList<>();
-        for (String num : rooms.getRoomsNumbers()) {
-            Room r = rooms.getRoom(num);
-            if (r != null && r.occupancyStatus() == OccupancyStatus.VACANT && r.status() == RoomStatus.AVAILABLE) {
-                out.add(r);
-            }
-        }
-        return out;
-    }
+    // ---------- печать списков свободных номеров сразу с сортировкой ----------
+//    private static List<Room> freeRoomsSnapshot(Rooms rooms) {
+//        List<Room> out = new ArrayList<>();
+//        for (String num : rooms.getRoomsNumbers()) {
+//            Room r = rooms.getRoom(num);
+//            if (r != null && r.occupancyStatus() == OccupancyStatus.VACANT && r.status() == RoomStatus.AVAILABLE) {
+//                out.add(r);
+//            }
+//        }
+//        return out;
+//    }
 
-    private static void printRoomsSortedByPrice(List<Room> rooms) {
-        List<Room> copy = new ArrayList<>(rooms);
-        copy.sort(Comparator.comparingDouble(Room::price));
-        System.out.println("== Комнаты (по цене ↑) ==");
-        for (Room r : copy) {
-            System.out.printf(" - %s: %.2f, %d★, вместимость %d, статус %s%n",
-                    r.number(), r.price(), r.stars(), r.capacity(), r.status());
-        }
-    }
 
-    private static void printRoomsSortedByCapacity(List<Room> rooms) {
-        List<Room> copy = new ArrayList<>(rooms);
-        copy.sort(Comparator.comparingInt(Room::capacity).reversed());
-        System.out.println("== Комнаты (по вместимости ↓) ==");
-        for (Room r : copy) {
-            System.out.printf(" - %s: вместимость %d, цена %.2f, %d★, статус %s%n",
-                    r.number(), r.capacity(), r.price(), r.stars(), r.status());
-        }
-    }
 
-    private static void printRoomsSortedByStars(List<Room> rooms) {
-        List<Room> copy = new ArrayList<>(rooms);
-        copy.sort(Comparator.comparingInt(Room::stars).reversed());
-        System.out.println("== Комнаты (по звёздам ↓) ==");
-        for (Room r : copy) {
-            System.out.printf(" - %s: %d★, цена %.2f, вместимость %d, статус %s%n",
-                    r.number(), r.stars(), r.price(), r.capacity(), r.status());
-        }
-    }
 
-    private static List<Room> allRoomsSnapshot(Rooms rooms) {
-        List<Room> list = new ArrayList<>();
-        for (String num : rooms.getRoomsNumbers()) {
-            Room r = rooms.getRoom(num);
-            if (r != null) list.add(r);
-        }
-        return list;
-    }
 
+
+    //  ------------------------------------------------------------------------------  //
     private static void divider(String title) {
         System.out.println();
         System.out.println("--------------------------------------------------");
@@ -100,10 +67,10 @@ public class AppDemo {
         ServiceCatalog catalog = new InMemoryServiceCatalog();
         ServiceUsageRegistry usage = new InMemoryServiceUsageRegistry();
 
-        // ====== Добавление номеров и изменение цен/вместимости/звёзд ======
+        // ====== Добавление номеров и изменение цен/вместимости/звёзд/ нельзя забывать, что max - capacity = 3,a stars = 5 ======
         rooms.addRoom("101", 2, 3);  // number, stars, capacity
         rooms.addRoom("102", 3, 4);
-        rooms.addRoom("103", 5, 2);
+        rooms.addRoom("103", 3, 2);
         rooms.addRoom("104", 1, 1);
         rooms.addRoom("105", 2, 3);
 
@@ -116,7 +83,7 @@ public class AppDemo {
         // Изменение цены номера (пример)
         rooms.setRoomPrice("104", 900);
 
-        // ====== Добавление услуг и изменение цен услуг ======
+        // ====== Добавление услуг ====== // просто для галочки, способ ниже больше импонирует
         catalog.addService("Завтрак", 300);
         catalog.addService("Спа", 1500);
         catalog.addService("Прачечная", 500);
@@ -135,30 +102,22 @@ public class AppDemo {
         guests.addHuman("103", "Олег", today, 2);      // [t, t+2)
         guests.addHuman("105", "Павел", today, 1);     // [t, t+1)
 
-        // Пример использования услуг гостем
+        // Пример использования услуг гостем // думаю в будущем лучше оставить только таким образом добавление услуг
         usage.addUsageFromCatalog("Олег", "Завтрак", today, catalog);
         usage.addUsageFromCatalog("Олег", "Прачечная", today.plusDays(1), catalog);
         usage.addUsage("Олег", "Мини-бар", today.plusDays(1), 900);
 
         // ====== 1) Список номеров (сортировки по цене / вместимости / звёздам) ======
-        divider("1) Список номеров (сортировки)");
-        List<Room> allRooms = allRoomsSnapshot(rooms);
-        printRoomsSortedByPrice(allRooms);
-        printRoomsSortedByCapacity(allRooms);
-        printRoomsSortedByStars(allRooms);
 
-        // Альтернатива: твоими готовыми методами сортировщика
-        divider("1a) Список номеров (через SortStats)");
+        divider("1) Список номеров (через SortStats)");
         sorter.sortRoomByPrice(rooms);
-        sorter.sortRoomByCapacity(rooms);
-        sorter.sortRoomByStars(rooms);
+//        sorter.sortRoomByCapacity(rooms);
+//        sorter.sortRoomByStars(rooms);
 
         // ====== 2) Список свободных номеров (сортировки) ======
         divider("2) Свободные на сегодня (сортировки)");
-        List<Room> free = freeRoomsSnapshot(rooms);
-        printRoomsSortedByPrice(free);
-        printRoomsSortedByCapacity(free);
-        printRoomsSortedByStars(free);
+        sorter.freeSortRoomByPrice(rooms);
+
 
         // ====== 3) Список постояльцев и их номеров (алфавит, дата выезда) ======
         divider("3) Постояльцы и их номера (имя ↑, дата выезда ↑)");
@@ -166,73 +125,75 @@ public class AppDemo {
 
         // ====== 4) Общее число свободных номеров ======
         divider("4) Общее число свободных номеров");
-        long freeCount = freeRoomsSnapshot(rooms).size();
+
+        long freeCount = rooms.freeRoomsNumber().size();
         System.out.println("Свободно номеров сейчас: " + freeCount);
 
         // ====== 5) Общее число постояльцев (сегодня) ======
         divider("5) Общее число постояльцев");
-        System.out.println("Сейчас проживает: " + guests.countActiveGuestsToday());
-
-        // ====== 6) Номера, свободные на дату в будущем ======
-        divider("6) Свободные на дату в будущем");
-        LocalDate futureDate = LocalDate.now().plusDays(10);
-        System.out.println("Свободные на " + futureDate + ": " + guests.listRoomsFreeOn(futureDate));
-
-        // ====== 7) Сумма за проживание, которую должен оплатить постоялец ======
-        divider("7) Сумма к оплате за проживание");
-        System.out.printf("Иван (101) должен за проживание: %.2f%n",
-                guests.computeRoomCharge("101", "Иван"));
-        System.out.printf("Олег (103) должен за проживание: %.2f%n",
-                guests.computeRoomCharge("103", "Олег"));
-
-        // (при желании можно добавить к проживанию стоимость услуг Олега:)
-        double olehServices = usage.listByGuest("Олег").stream().mapToDouble(u -> u.price).sum();
-        System.out.printf("Олег (услуги): %.2f, ИТОГО (проживание+услуги): %.2f%n",
-                olehServices, guests.computeRoomCharge("103", "Олег") + olehServices);
-
-        // ====== 8) 3 последних постояльца комнаты ======
-        divider("8) Последние 3 постояльца комнаты 101");
-        sorter.printLast3GuestsOfRoom("101", guests);
-
-        // ====== 9) Список услуг постояльца и их цену (сортировки) ======
-        divider("9) Услуги Олега (по дате ↑)");
-        sorter.printGuestServices("Олег", usage, false);
-        divider("9a) Услуги Олега (по цене ↑)");
-        sorter.printGuestServices("Олег", usage, true);
-
-        // ====== 10) Цены услуг и номеров (по разделу, цене) ======
-        divider("10) Цены услуг и номеров");
-        sorter.printPrices(rooms, catalog);
-
-        // ====== 11) Детали отдельного номера ======
-        divider("11) Детали номера 103");
-        sorter.printRoomDetails(rooms, "103", guests);
-
-        // ====== Операции ======
-        divider("Операции: выселение, обслуживание, изменение цен, добавление");
-        // Выселить из номера 103 (сегодняшних постояльцев этой комнаты)
-        guests.removePeopleFromRoom("103");
-
-        // Изменить статус номера: ремонт/обслуживание
-        Room r104 = rooms.getRoom("104");
-        r104.setStatus(RoomStatus.SERVICE);
-        System.out.println("104 теперь в статусе: " + r104.status());
-
-        // Добавить новый номер
-        rooms.addRoom("106", 4, 2);
-        rooms.setRoomPrice("106", 2000);
-
-        // Добавить новую услугу и изменить цену
-        catalog.addService("Трансфер", 1000);
-        catalog.setServicePrice("Трансфер", 1200);
-
-        // Поселить в номер (новое бронирование)
-        guests.addHuman("106", "Виктор", LocalDate.now().plusDays(1), 2);
-
-        // Контрольный вывод после операций
-        divider("Контрольный вывод после операций");
-        System.out.println("Свободные на сегодня: " +
-                freeRoomsSnapshot(rooms).stream().map(Room::number).collect(Collectors.toList()));
-        sorter.printRoomDetails(rooms, "106", guests);
+        System.out.println("Сейчас проживает: " + guests.countActiveGuestsToday()); //!!!!!!!!!!!!!!!!!!!!!!!!!!
+//
+//        // ====== 6) Номера, свободные на дату в будущем ======
+//        divider("6) Свободные на дату в будущем");
+//        LocalDate futureDate = LocalDate.now().plusDays(10); // выбираем на сколько дней вперед смотреть
+//        System.out.println("Свободные на " + futureDate + ": " + guests.listRoomsFreeOn(futureDate));
+//
+//        // ====== 7) Сумма за проживание, которую должен оплатить постоялец ======
+//        divider("7) Сумма к оплате за проживание");
+//
+//        System.out.printf("Иван (101) должен за проживание: %.2f%n",
+//                guests.computeRoomCharge("101", "Иван"));
+//        System.out.printf("Олег (103) должен за проживание: %.2f%n",
+//                guests.computeRoomCharge("103", "Олег"));
+//
+//        // (при желании можно добавить к проживанию стоимость услуг Олега:)
+//        double olehServices = usage.listByGuest("Олег").stream().mapToDouble(u -> u.price).sum();
+//        System.out.printf("Олег (услуги): %.2f, ИТОГО (проживание+услуги): %.2f%n",
+//                olehServices, guests.computeRoomCharge("103", "Олег") + olehServices);
+//
+//        // ====== 8) 3 последних постояльца комнаты ======
+//        divider("8) Последние 3 постояльца комнаты 101");
+//        sorter.printLast3GuestsOfRoom("101", guests);
+//
+//        // ====== 9) Список услуг постояльца и их цену (сортировки) ======
+//        divider("9) Услуги Олега (по дате ↑)");
+//        sorter.printGuestServices("Олег", usage, false);
+//        divider("9a) Услуги Олега (по цене ↑)");
+//        sorter.printGuestServices("Олег", usage, true);
+//
+//        // ====== 10) Цены услуг и номеров (по разделу, цене) ======
+//        divider("10) Цены услуг и номеров");
+//        sorter.printPrices(rooms, catalog);
+//
+//        // ====== 11) Детали отдельного номера ======
+//        divider("11) Детали номера 103");
+//        sorter.printRoomDetails(rooms, "103", guests);
+//
+//        // ====== Операции ======
+//        divider("Операции: выселение, обслуживание, изменение цен, добавление");
+//        // Выселить из номера 103 (сегодняшних постояльцев этой комнаты)
+//        guests.removePeopleFromRoom("103");
+//
+//        // Изменить статус номера: ремонт/обслуживание
+//        Room r104 = rooms.getRoom("104");
+//        r104.setStatus(RoomStatus.SERVICE);
+//        System.out.println("104 теперь в статусе: " + r104.status());
+//
+//        // Добавить новый номер
+//        rooms.addRoom("106", 4, 2);
+//        rooms.setRoomPrice("106", 2000);
+//
+//        // Добавить новую услугу и изменить цену
+//        catalog.addService("Трансфер", 1000);
+//        catalog.setServicePrice("Трансфер", 1200);
+//
+//        // Поселить в номер (новое бронирование)
+//        guests.addHuman("106", "Виктор", LocalDate.now().plusDays(1), 2);
+//
+//        // Контрольный вывод после операций
+//        divider("Контрольный вывод после операций");
+//        System.out.println("Свободные на сегодня: " +
+//                freeRoomsSnapshot(rooms).stream().map(Room::number).collect(Collectors.toList()));
+//        sorter.printRoomDetails(rooms, "106", guests);
     }
 }
