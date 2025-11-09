@@ -10,20 +10,15 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Реализация реестра гостей с поддержкой дат:
- * - Хранит «заезды» как интервалы [start, end) по каждому номеру;
- * - Проверяет вместимость по числу пересекающихся заездов;
- * - Методы «кто живёт», «свободные» и пр. работают по состоянию на сегодня.
- */
+
 public class InMemoryGuestRegistry implements GuestRegistry {
 
-    /** Описание одного проживания (бронь для одного гостя). */
+
     private static final class Stay {
         final String roomId;
         final String guest;
-        final LocalDate start; // включительно
-        final LocalDate end;   // исключая день выезда
+        final LocalDate start;
+        final LocalDate end;
 
         Stay(String roomId, String guest, LocalDate start, LocalDate end) {
             if (!end.isAfter(start)) {
@@ -50,7 +45,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         this.rooms = rooms;
     }
 
-    // ------------- Вспомогательные -------------
+
 
     private static boolean overlaps(LocalDate s1, LocalDate e1, LocalDate s2, LocalDate e2) {
         // Есть пересечение, если НЕ (e1 <= s2 || e2 <= s1)
@@ -61,8 +56,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         return LocalDate.now();
     }
 
-    /** Пересчитать и выставить статус занятости номера на сегодня. */
-    // данный метод проверяет, есть ли люди в списке staysByRoom, и если есть, то меняет статус комнаты и применяет метод activeOn(today)
+
     private void refreshOccupancyToday(String roomId) {
         Room room = rooms.getRoom(roomId);
         if (room == null) return;
@@ -79,7 +73,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         }
     }
 
-    // ------------- API интерфейса -------------
+
 
     @Override
     public List<String> getListOfPeople(String roomId) {
@@ -222,7 +216,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
                 .count();
     }
 
-    // (3) номера, свободные на указанную дату
+
     @Override
     public List<String> listRoomsFreeOn(LocalDate date) {
         List<String> free = new ArrayList<>();
@@ -235,7 +229,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         return free;
     }
 
-    // (7) 3 последних постояльца номера (по дате выезда)
+
     @Override
     public List<GuestRegistry.GuestEntry> last3GuestsOfRoom(String roomId) {
         var src = new ArrayList<GuestRegistry.GuestEntry>();
@@ -246,7 +240,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         return src.size() > 3 ? src.subList(0, 3) : src;
     }
 
-    // (8) сумма к оплате за номер (ночёвки * цена номера)
+
     @Override
     public double computeRoomCharge(String roomId, String guestName) {
         Room r = rooms.getRoom(roomId);

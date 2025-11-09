@@ -12,22 +12,22 @@ public interface GuestRegistry {
     void CountFreeRooms();
     Map<String, List<String>> AllWhoLivesInRooms();
 
-    // уже было
+
     List<GuestEntry> getAllGuestEntries();
 
-    // (2) общее число постояльцев СЕГОДНЯ
+
     int countActiveGuestsToday();
 
-    // (3) список номеров, свободных на указанную дату (будущее/любая дата)
+
     List<String> listRoomsFreeOn(LocalDate date);
 
-    // (7) 3 последних постояльца номера
+
     List<GuestEntry> last3GuestsOfRoom(String roomId);
 
-    // (8) сумма к оплате за номер для постояльца (только проживание: цена номера * ночи)
+
     double computeRoomCharge(String roomId, String guestName);
 
-    // DTO
+
     final class GuestEntry {
         public final String guest;
         public final String roomId;

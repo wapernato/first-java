@@ -115,7 +115,7 @@ public class CheckInSortStatus implements SortStats {
 
         }
     }
-    // (1)
+
     @Override
     public void sortGuestsByAlphabetThenCheckout(GuestRegistry guests) {
         List<GuestRegistry.GuestEntry> data = new ArrayList<>(guests.getAllGuestEntries());
@@ -130,7 +130,6 @@ public class CheckInSortStatus implements SortStats {
         }
     }
 
-    // (4)
     @Override
     public void printRoomDetails(Rooms rooms, String roomId, GuestRegistry guests) {
         Room r = rooms.getRoom(roomId);
@@ -152,7 +151,6 @@ public class CheckInSortStatus implements SortStats {
         }
     }
 
-    // (5)
     @Override
     public void printPrices(Rooms rooms, ServiceCatalog services) {
         // Раздел "Номера" (по цене)
@@ -176,7 +174,6 @@ public class CheckInSortStatus implements SortStats {
         }
     }
 
-    // (6)
     @Override
     public void printGuestServices(String guestName, ServiceUsageRegistry usage, boolean sortByPrice) {
         var list = new ArrayList<>(usage.listByGuest(guestName));
@@ -195,7 +192,6 @@ public class CheckInSortStatus implements SortStats {
         System.out.printf("Итого за услуги: %.2f%n", sum);
     }
 
-    // (7)
     @Override
     public void printLast3GuestsOfRoom(String roomId, GuestRegistry guests) {
         var last3 = guests.last3GuestsOfRoom(roomId);

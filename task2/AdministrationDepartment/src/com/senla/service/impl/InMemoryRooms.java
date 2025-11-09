@@ -113,19 +113,6 @@ public class InMemoryRooms implements Rooms {
         }
         r.setStars(stars);
     }
-//    @Override
-//    public List<String> getAllRooms(){
-//
-//    }
-//    @Override
-//    public void getAllStatusRoom(String number){
-//        Room r = rooms.get(number);
-//        System.out.println(rooms.keySet());
-//    }
-//    @Override
-//    public List<String> freeRooms(){
-//
-//    }
 
 
     @Override
