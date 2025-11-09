@@ -1,9 +1,25 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+### OS junk
+.DS_Store
+Thumbs.db
 
-### Eclipse ###
+### Logs / temp
+*.log
+*.tmp
+*.swp
+
+### IntelliJ IDEA
+.idea/
+*.iml
+# (опционально оставить общие настройки команды)
+# .idea/*
+# !.idea/codeStyles/
+# !.idea/inspectionProfiles/
+# !.idea/runConfigurations/
+
+### VS Code
+.vscode/
+
+### Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -11,19 +27,28 @@ out/
 .settings
 .springBeans
 .sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
 
-### NetBeans ###
+### NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
-.vscode/
+### Build outputs (любой инструмент)
+out/
+build/
+target/
+bin/
 
-### Mac OS ###
-.DS_Store
+# Если очень нужно хранить специфический out/bin внутри src — можно разрешить точечно:
+# !**/src/main/**/out/
+# !**/src/test/**/out/
+# !**/src/main/**/bin/
+# !**/src/test/**/bin/
+
+### Gradle/Maven caches
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
