@@ -1,24 +1,18 @@
+# IDE
 .idea/
 *.iml
-*.class
-out/
-bin/
+.vscode/
+
+# Build
 target/
 build/
-.gradle/
-.mvn/
-.vscode/
-.DS_Store
-.idea/
-*.iml
-*.ipr
-*.iws
-*.class
 out/
-bin/
-target/
-build/
-.gradle/
-.mvn/
-.vscode/
+
+# Logs & OS
+*.log
 .DS_Store
+Thumbs.db
+
+# Java / tools
+*.class
+hs_err_pid*
