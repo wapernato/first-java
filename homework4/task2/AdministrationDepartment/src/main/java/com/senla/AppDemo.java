@@ -21,7 +21,6 @@ public class AppDemo {
     }
 
     public static void main(String[] args) {
-
         // ====== Инициализация сервисов ======
         Rooms rooms = new InMemoryRooms();
         GuestRegistry guests = new InMemoryGuestRegistry(rooms);
