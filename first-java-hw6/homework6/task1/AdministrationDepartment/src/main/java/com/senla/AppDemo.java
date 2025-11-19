@@ -1,9 +1,6 @@
 package com.senla;
 
-import com.senla.controller.AppDemoControllerGuests;
-import com.senla.controller.AppDemoControllerRooms;
-import com.senla.controller.AppDemoControllerSorter;
-import com.senla.controller.AppDemoControllerService;
+import com.senla.controller.*;
 import com.senla.service.*;
 import com.senla.service.impl.*;
 import com.senla.view.AppDemoView;
@@ -30,11 +27,12 @@ public class AppDemo {
             AppDemoControllerService controllerService = new AppDemoControllerService(rooms, guests, sorter, catalog, usage, view);
             AppDemoControllerSorter controllerSorter = new AppDemoControllerSorter(rooms, guests, sorter, catalog, usage, view);
 
+            ControllersMenu controllersMenu = new ControllersMenu(controllerRooms, controllerGuests, controllerService, controllerSorter, view);
             view.help();
             try ( Scanner sc = new Scanner(System.in) ){
 
                 while (true){
-                    System.out.print("> ");
+                    System.out.print("> (help - список команд) ");
                     if(!sc.hasNextLine()) break;
                     String line = sc.nextLine().trim();
                     if(line.isEmpty()) continue;
@@ -43,33 +41,35 @@ public class AppDemo {
 
 
                     switch (cmd){
-                        case "добавить комнату" -> controllerRooms.addRoom(); // 1
-                        case "изменить цену комнаты" -> controllerRooms.setRoomPrice(); // 2
-                        case "изменить статус комнаты" -> controllerRooms.setStatus(); // 3
-                        case "добавить услугу" -> controllerService.addService(); // 4
-                        case "изменить цену услуги" -> controllerService.setServicePrice(); // 5
-                        case "добавить гостя" -> controllerGuests.addHuman(); // 6
-                        case "записать услугу на гостя" -> controllerService.addUsageFromCatalog(); // 7
-                        case "сортировать комнаты по цена/вместимость/звезды" -> controllerSorter.sortByStats(); // 8
-                        case "сортировка свободных номеров" -> controllerSorter.freeSortRoomByStats(); // 9
-                        case "список постояльцев и их номеров" -> controllerSorter.sortGuestsByAlphabetThenCheckout(); // 10 - проверить
-                        case "общее число свободных номеров" -> controllerRooms.freeRoomsNumber(); // 11 - проверить
-                        case "общее число постояльцев сегодня" -> controllerGuests.countActiveGuestsToday(); // 12 - проверить
-                        case "свободные номера на определенную дату" -> controllerRooms.listRoomsFreeOn(); // 13 - проверить
-                        case "сколько должен платить постоялец" -> controllerGuests.computeRoomCharge(); // 14
-                        case "последние 3 постояльца комнаты" -> controllerSorter.last3GuestsOfRoom(); // 15
-                        case "список услуг постояльца и их цену" -> controllerSorter.guestServices(); // 16
-                        case "цены услуг и номеров" -> controllerSorter.prices(); // 17
-                        case "узнать детали комнаты" -> controllerSorter.roomDetails(); // 18
-                        case "удалить человека из номера" -> controllerGuests.removePeopleFromRoom(); // 19
-
-                        case "123" -> guests.getRoomId();
-                        case "импортировать список гостей" -> controllerGuests.guestImport(); // 20
-                        case "импортировать список комнат" -> controllerRooms.roomsImport(); // 21
+                        case "1", "работа с комнатами" -> controllersMenu.menuRooms();
+                        // работа с комнатами
+//                        case "1","добавить комнату" -> controllerRooms.addRoom(); // 1
+//                        case "2","изменить цену комнаты" -> controllerRooms.setRoomPrice(); // 2
+//                        case "3","изменить статус комнаты" -> controllerRooms.setStatus(); // 3
+//                        case "4","добавить услугу" -> controllerService.addService(); // 4
+//                        case "5","изменить цену услуги" -> controllerService.setServicePrice(); // 5
+//                        case "6","добавить гостя" -> controllerGuests.addHuman(); // 6
+//                        case "7","записать услугу на гостя" -> controllerService.addUsageFromCatalog(); // 7
+//                        case "8","сортировать комнаты по цена/вместимость/звезды" -> controllerSorter.sortByStats(); // 8
+//                        case "9","сортировка свободных номеров" -> controllerSorter.freeSortRoomByStats(); // 9
+//                        case "10","список постояльцев и их номеров" -> controllerSorter.sortGuestsByAlphabetThenCheckout(); // 10 - проверить
+//                        case "11","общее число свободных номеров" -> controllerRooms.freeRoomsNumber(); // 11 - проверить
+//                        case "12","общее число постояльцев сегодня" -> controllerGuests.countActiveGuestsToday(); // 12 - проверить
+//                        case "13","свободные номера на определенную дату" -> controllerRooms.listRoomsFreeOn(); // 13 - проверить
+//                        case "14","сколько должен платить постоялец" -> controllerGuests.computeRoomCharge(); // 14
+//                        case "15","список услуг постояльца и их цену" -> controllerSorter.guestServices(); // 15
+//                        case "16","цены услуг и номеров" -> controllerSorter.prices(); // 16
+//                        case "17", "последние 3 жильца" -> controllerSorter.last3GuestsOfRoom(); // 17
+//                        case "18","узнать детали комнаты" -> controllerSorter.roomDetails(); // 18
+//                        case "19","удалить человека из номера" -> controllerGuests.removePeopleFromRoom(); // 19
+//
+//                        case "123" -> guests.getRoomId();
+//                        case "импортировать список гостей" -> controllerGuests.guestImport(); // 20
+//                        case "импортировать список комнат" -> controllerRooms.roomsImport(); // 21
 
                         case "help", "помощь" -> view.help();
 
-                        case "выход" -> {
+                        case "выход","exit", "quit" -> {
                             System.out.println("Программа завершена.");
                             return;
                         }

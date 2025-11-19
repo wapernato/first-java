@@ -1,10 +1,8 @@
 package com.senla.controller;
 
-
 import com.senla.model.RoomStatus;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
-
 
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
@@ -17,20 +15,31 @@ public class AppDemoControllerRooms {
     private final WorksWithFilesImport importt;
     private final AppDemoView view;
 
-
-    public AppDemoControllerRooms(Rooms rooms, GuestRegistry guests, SortStats sorter, ServiceCatalog catalog, ServiceUsageRegistry usage, AppDemoView view, WorksWithFilesImport importt) {
+    public AppDemoControllerRooms(Rooms rooms,
+                                  GuestRegistry guests,
+                                  SortStats sorter,
+                                  ServiceCatalog catalog,
+                                  ServiceUsageRegistry usage,
+                                  AppDemoView view,
+                                  WorksWithFilesImport importt) {
         this.rooms = rooms;
         this.guests = guests;
         this.view = view;
         this.importt = importt;
     }
 
+
     public void addRoom() {
+        view.showMessage("\n=== Добавление новой комнаты ===\n");
+
         try {
 
             int roomNumber;
             while (true) {
-                String numberStr = view.askString("Введите номер комнаты");
+                String numberStr = view.askString(
+                        "Введите номер комнаты (целое положительное число, например 101)"
+                );
+
                 try {
                     roomNumber = Integer.parseInt(numberStr);
                     if (roomNumber <= 0) {
@@ -44,22 +53,24 @@ public class AppDemoControllerRooms {
             }
             String number = String.valueOf(roomNumber);
 
-
+            // --- Вместимость ---
             int capacity;
             while (true) {
-
-                capacity = view.askInt("Введите вместимость (1–3)");
+                capacity = view.askInt(
+                        "Введите вместимость комнаты (количество гостей от 1 до 3)"
+                );
                 if (capacity > 0 && capacity <= 3) {
                     break;
                 } else {
-                    view.showMessage("Вместимость должна быть от 1 до 3. Попробуйте ещё раз.");
+                    view.showMessage("Вместимость должна быть от 1 до 3 гостей. Попробуйте ещё раз.");
                 }
             }
 
-
             int stars;
             while (true) {
-                stars = view.askInt("Введите количество звёзд (1–5)");
+                stars = view.askInt(
+                        "Введите количество звёзд для комнаты (от 1 до 5)"
+                );
                 if (stars > 0 && stars <= 5) {
                     break;
                 } else {
@@ -68,97 +79,156 @@ public class AppDemoControllerRooms {
             }
 
             rooms.addRoom(number, capacity, stars);
-            view.showMessage("Комната добавлена: №" + number);
+            view.showMessage("Комната №" + number +
+                    " успешно добавлена. Вместимость: " + capacity +
+                    ", звёзд: " + stars + ".");
 
-        }
-        catch (Exception e) {
-            view.showError("Произошла непредвиденная ошибка: " + e.getMessage());
+        } catch (Exception e) {
+            view.showError("При добавлении комнаты произошла непредвиденная ошибка. " +
+                    "Попробуйте ещё раз или обратитесь к администратору.\n" +
+                    "Технические детали: " + e.getMessage());
         }
     }
 
     public void setRoomPrice() {
+        view.showMessage("\n=== Изменение цены комнаты ===");
         try {
             String number;
-            while (true){
-                number = view.askString("Введите номер комнаты");
+            while (true) {
+                number = view.askString(
+                        "Введите номер комнаты, для которой нужно изменить цену"
+                );
                 if (rooms.getRoomsNumbers().contains(number)) {
-                    view.showMessage("Номер есть в отеле");
+                    view.showMessage("Комната №" + number + " найдена в отеле.");
                     break;
-                }
-                else {
-                    view.showMessage("Такого номера нету в отеле. Попробуйте ещё раз.");
+                } else {
+                    view.showMessage("Комнаты с номером \"" + number +
+                            "\" не существует. Проверьте номер и попробуйте ещё раз.");
                 }
             }
 
             int price;
             while (true) {
-                price = view.askInt("Введите цену комнаты");
-                    if (price > 0) {
-                        break;
-                    }
-                    else {
-                        view.showMessage("Цена не может быть отрицательной");
-                    }
+                price = view.askInt(
+                        "Введите новую цену за проживание в этой комнате (целое число больше 0)"
+                );
+                if (price > 0) {
+                    break;
+                } else {
+                    view.showMessage("Цена должна быть больше нуля. Попробуйте ещё раз.");
                 }
-            rooms.setRoomPrice(number, price);
-            view.showMessage("Цена "+ number + " номера - " + price);
             }
 
-        catch (Exception e) {
-                view.showError("Произошла непредвиденная ошибка: " + e.getMessage());
+            rooms.setRoomPrice(number, price);
+            view.showMessage("Цена для комнаты №" + number +
+                    " успешно обновлена и теперь составляет " + price + " у.е.");
+
+        } catch (Exception e) {
+            view.showError("Не удалось изменить цену комнаты. " +
+                    "Попробуйте ещё раз или обратитесь к администратору.\n" +
+                    "Технические детали: " + e.getMessage());
         }
     }
 
+
     public void setStatus() {
+        view.showMessage("\n=== Изменение статуса комнаты ===");
         try {
+
             String number;
             while (true) {
-                number = view.askString("Введите номер комнаты, у который будет изменен статус");
-                if(rooms.getRoomsNumbers().contains(number)){
-                    view.showMessage("Номер есть в отеле");
+                number = view.askString(
+                        "Введите номер комнаты, у которой нужно изменить статус"
+                );
+                if (rooms.getRoomsNumbers().contains(number)) {
+                    view.showMessage("Комната №" + number + " найдена в отеле.");
                     break;
+                } else {
+                    view.showMessage("Комнаты с номером \"" + number +
+                            "\" не найдено. Проверьте номер и попробуйте ещё раз.");
                 }
             }
 
+
+            view.showMessage("Доступные статусы: AVAILABLE (свободна), " +
+                    "MAINTENANCE (на обслуживании), SERVICE (уборка/сервис).");
+
             RoomStatus status;
             while (true) {
-                status = view.askRoomStatus("Введите новый статус комнаты: AVAILABLE, MAINTENANCE, SERVICE");
-                if (status == RoomStatus.AVAILABLE || status == RoomStatus.SERVICE || status == RoomStatus.MAINTENANCE ){
+                status = view.askRoomStatus(
+                        "Введите новый статус комнаты (AVAILABLE / MAINTENANCE / SERVICE)"
+                );
+                if (status == RoomStatus.AVAILABLE ||
+                        status == RoomStatus.SERVICE ||
+                        status == RoomStatus.MAINTENANCE) {
                     break;
+                } else {
+                    view.showMessage("Неверный статус. Используйте AVAILABLE, MAINTENANCE или SERVICE.");
                 }
             }
 
             rooms.setRoomStatus(number, status);
-            view.showMessage("Статус комнаты " + number + " изменён на: " + status);
+            view.showMessage("Статус комнаты №" + number +
+                    " успешно изменён на: " + status + ".");
 
-        }
-        catch (Exception e) {
-            view.showError("Произошла непредвиденная ошибка: " + e.getMessage());
+        } catch (Exception e) {
+            view.showError("Не удалось изменить статус комнаты. " +
+                    "Попробуйте ещё раз или обратитесь к администратору.\n" +
+                    "Технические детали: " + e.getMessage());
         }
     }
 
+
     public void freeRoomsNumber() {
+        view.showMessage("\n=== Общее количество свободных номеров ===");
         long countActive = rooms.freeRoomsNumber().size();
+
         view.freeRoomsNumber(countActive);
     }
 
+
     public void listRoomsFreeOn() {
+        view.showMessage("\n=== Свободные номера на выбранную дату ===");
         try {
-            LocalDate futureDate = view.askDate("Введите дату на которую будем смотреть свободные номера");
-            if (futureDate.isAfter(LocalDate.now())) {
-                view.showMessage("Свободные на " + futureDate + ": " + guests.listRoomsFreeOn(futureDate));
+            LocalDate futureDate = view.askDate(
+                    "Введите дату, на которую нужно показать свободные номера " +
+                            "(формат ГГГГ-ММ-ДД, например 2024-10-12):"
+            );
+
+            if (futureDate.isBefore(LocalDate.now())) {
+                view.showMessage("Вы ввели дату в прошлом: " + futureDate +
+                        ". Для просмотра свободных номеров выберите сегодняшнюю или будущую дату.");
+                return;
             }
+
+            var freeRooms = guests.listRoomsFreeOn(futureDate);
+            if (freeRooms == null || freeRooms.isEmpty()) {
+                view.showMessage("На дату " + futureDate +
+                        " свободных номеров нет.");
+            } else {
+                view.showMessage("Свободные номера на " + futureDate + ": " + freeRooms);
+            }
+
         } catch (InputMismatchException ime) {
-            System.out.println("Напишите числовое значение, а не строчку");
-        }
-        catch (DateTimeParseException e){
-            System.out.println("Неверный формат даты. Используйте формат гггг-мм-дд, например 2024-10-12");
+            view.showError("Дата должна быть введена числом. Используйте формат ГГГГ-ММ-ДД.");
+        } catch (DateTimeParseException e) {
+            view.showError("Неверный формат даты. Используйте формат ГГГГ-ММ-ДД, " +
+                    "например 2024-10-12.");
+        } catch (Exception e) {
+            view.showError("Не удалось получить список свободных номеров. " +
+                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
         }
     }
 
-    public void roomsImport(){
-        importt.importRooms();
-        view.showMessage("Ввод списка комнат из файла завершен.");
 
+    public void roomsImport() {
+        view.showMessage("\n=== Импорт списка комнат из файла ===");
+        try {
+            importt.importRooms();
+            view.showMessage("Импорт списка комнат из файла успешно завершён.");
+        } catch (Exception e) {
+            view.showError("Не удалось импортировать список комнат из файла. " +
+                    "Проверьте файл и попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+        }
     }
 }

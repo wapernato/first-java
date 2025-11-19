@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDate;
 
+import static java.lang.Integer.parseInt;
+
 
 public class AppDemoView {
     SortStats sorter = new CheckInSortStatus();
@@ -27,12 +29,13 @@ public class AppDemoView {
     }
 
 
+
     public int askInt(String prompt) {
         while (true) {
             System.out.print(prompt + ": ");
             String s = in.nextLine().trim();
             try {
-                return Integer.parseInt(s);
+                return parseInt(s);
             } catch (NumberFormatException e) {
                 System.out.println("Введите целое число.");
             }
