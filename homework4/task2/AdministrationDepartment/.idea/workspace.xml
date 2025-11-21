@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5f773d72-215c-49b4-96a0-16395e9af22c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.idea/artifacts/AdministrationDepartment_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/AdministrationDepartment.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/artifacts/program.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/artifacts/run.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/AppDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/model/Assignment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/model/OccupancyStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/model/Room.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/model/RoomStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/GuestRegistry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/Rooms.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/ServiceCatalog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/ServiceUsageRegistry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/SortStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/impl/CheckInSortStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/impl/InMemoryGuestRegistry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/impl/InMemoryRooms.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/impl/InMemoryServiceCatalog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../task2/AdministrationDepartment/src/com/senla/service/impl/InMemoryServiceUsageRegistry.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "wapernato"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/wapernato/first-java.git",
+    "accountId": "34917b79-2004-41de-9f52-5bd556db4240"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="35LgDCZcUuxBVry8O8xzrz4onZD" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "hw4/Rodion",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f773d72-215c-49b4-96a0-16395e9af22c" name="Changes" comment="" />
+      <created>1762894644059</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762894644059</updated>
+    </task>
+    <servers />
+  </component>
+</project>
