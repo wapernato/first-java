@@ -124,7 +124,6 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         // После добавления — обновим статус на сегодня.
 
         System.out.println(id);
-        System.out.println("Забронировано: " + human + " в " + roomId + " " + checkIn + "–" + checkOut);
     }
 
     @Override

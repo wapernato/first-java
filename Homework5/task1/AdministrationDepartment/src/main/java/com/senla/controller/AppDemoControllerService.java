@@ -35,14 +35,17 @@ public class AppDemoControllerService {
         try {
 
             String service = view.askString(
-                    "Введите название услуги (например: Завтрак, СПА, Трансфер):"
+                    "Введите название услуги (например: Завтрак, СПА, Трансфер) или 0 для выхода"
             );
-
+            if(view.commandBack(service)){
+                view.showMessage("Вы вернулись назад");
+                return;
+            }
 
             int price;
             while (true) {
                 price = view.askInt(
-                        "Введите цену услуги (целое число больше 0):"
+                        "Введите цену услуги (целое число больше 0)"
                 );
                 if (price > 0) {
                     break;
@@ -58,7 +61,7 @@ public class AppDemoControllerService {
         } catch (Exception e) {
             view.showError("При добавлении услуги произошла непредвиденная ошибка. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
-                    "Технические детали: " + e.getMessage());
+                    "Технические детали " + e.getMessage());
         }
     }
 
@@ -70,9 +73,12 @@ public class AppDemoControllerService {
             String service;
             while (true) {
                 service = view.askString(
-                        "Введите название услуги, для которой нужно изменить цену:"
+                        "Введите название услуги, для которой нужно изменить цену или 0 для выхода"
                 );
-
+                if(view.commandBack(service)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (catalog.listServiceNames().contains(service)) {
                     view.showMessage("Услуга \"" + service + "\" найдена в каталоге.");
                     break;
@@ -85,7 +91,7 @@ public class AppDemoControllerService {
             int price;
             while (true) {
                 price = view.askInt(
-                        "Введите новую цену услуги (целое число больше 0):"
+                        "Введите новую цену услуги (целое число больше 0)"
                 );
                 if (price > 0) {
                     break;
@@ -101,21 +107,39 @@ public class AppDemoControllerService {
         } catch (Exception e) {
             view.showError("Не удалось изменить цену услуги. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
-                    "Технические детали: " + e.getMessage());
+                    "Технические детали " + e.getMessage());
         }
     }
 
     public void addUsageFromCatalog() {
         view.showMessage("\n=== Назначение услуги гостю ===");
         try {
-
+            // НЕ РАБОТАЕТ
+            String number;
+            while (true){
+                number = view.askString("Введите номер, в котором проживает нужный гость или 0 для выхода");
+                if (view.commandBack(number)){
+                    view.showMessage("Команда назад выполнена");
+                    return;
+                }
+                if(rooms.getRoomsNumbers().contains(number)){
+                    view.showMessage("Номер есть в отеле");
+                    break;
+                }
+                else{
+                    view.showMessage("Номера нету в отеле. Попробуйте еще раз");
+                }
+            }
             String name;
             while (true) {
                 name = view.askString(
-                        "Введите имя гостя, которому нужно назначить услугу:"
+                        "Введите имя гостя, которому нужно назначить услугу или 0 для выхода"
                 );
-
-                if (guests.getAllGuestEntries().contains(name)) {
+                if(view.commandBack(name)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
+                if (guests.getListOfPeople(number).contains(name)) {
                     view.showMessage("Гость \"" + name + "\" найден в списке проживающих.");
                     break;
                 } else {
@@ -127,9 +151,12 @@ public class AppDemoControllerService {
             String service;
             while (true) {
                 service = view.askString(
-                        "Введите название услуги (как в каталоге услуг):"
+                        "Введите название услуги (как в каталоге услуг) или 0 для выхода"
                 );
-
+                if (view.commandBack(service)){
+                    view.showMessage("Команда назад выполнена");
+                    return;
+                }
                 if (catalog.listServiceNames().contains(service)) {
                     view.showMessage("Услуга \"" + service + "\" есть в каталоге.");
                     break;
@@ -145,7 +172,7 @@ public class AppDemoControllerService {
                 try {
                     date = view.askDate(
                             "Укажите дату использования услуги гостем " +
-                                    "(формат ГГГГ-ММ-ДД, например 2024-10-12):"
+                                    "(формат ГГГГ-ММ-ДД, например 2024-10-12)"
                     );
                 } catch (DateTimeParseException e) {
                     view.showMessage("Неверный формат даты. Используйте формат ГГГГ-ММ-ДД. Попробуйте ещё раз.");
@@ -153,7 +180,7 @@ public class AppDemoControllerService {
                 }
 
                 if (date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) {
-                    view.showMessage("Дата использования услуги: " + date);
+                    view.showMessage("Дата использования услуги " + date);
                     break;
                 } else {
                     view.showMessage("Дата не может быть в прошлом. Выберите сегодняшнюю или будущую дату.");
@@ -167,7 +194,7 @@ public class AppDemoControllerService {
         } catch (Exception e) {
             view.showError("Не удалось записать использование услуги. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
-                    "Технические детали: " + e.getMessage());
+                    "Технические детали " + e.getMessage());
         }
     }
 }

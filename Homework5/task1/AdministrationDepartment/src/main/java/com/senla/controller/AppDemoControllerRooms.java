@@ -28,7 +28,6 @@ public class AppDemoControllerRooms {
         this.importt = importt;
     }
 
-
     public void addRoom() {
         view.showMessage("\n=== Добавление новой комнаты ===\n");
 
@@ -37,9 +36,12 @@ public class AppDemoControllerRooms {
             int roomNumber;
             while (true) {
                 String numberStr = view.askString(
-                        "Введите номер комнаты (целое положительное число, например 101)"
+                        "Введите номер комнаты (целое положительное число, например 101) или 0 для возврата"
                 );
-
+                if(view.commandBack(numberStr)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 try {
                     roomNumber = Integer.parseInt(numberStr);
                     if (roomNumber <= 0) {
@@ -96,8 +98,12 @@ public class AppDemoControllerRooms {
             String number;
             while (true) {
                 number = view.askString(
-                        "Введите номер комнаты, для которой нужно изменить цену"
+                        "Введите номер комнаты, для которой нужно изменить цену или 0 для возврата"
                 );
+                if(view.commandBack(number)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (rooms.getRoomsNumbers().contains(number)) {
                     view.showMessage("Комната №" + number + " найдена в отеле.");
                     break;
@@ -138,8 +144,12 @@ public class AppDemoControllerRooms {
             String number;
             while (true) {
                 number = view.askString(
-                        "Введите номер комнаты, у которой нужно изменить статус"
+                        "Введите номер комнаты, у которой нужно изменить статус или 0 для возврата"
                 );
+                if(view.commandBack(number)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (rooms.getRoomsNumbers().contains(number)) {
                     view.showMessage("Комната №" + number + " найдена в отеле.");
                     break;

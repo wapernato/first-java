@@ -34,13 +34,17 @@ public class AppDemoControllerSorter {
         try {
             while (true) {
                 String sortType = view.askString(
-                        "Выберите критерий сортировки (введите слово):\n" +
+                        "Выберите критерий сортировки (введите слово)\n" +
                                 " - звезды\n" +
                                 " - вместимость\n" +
                                 " - цена\n" +
-                                "Ваш выбор:"
+                                " - 0 для выхода\n" +
+                                "Ваш выбор"
                 );
-
+                if(view.commandBack(sortType)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (sortType == null || sortType.isBlank()) {
                     view.showMessage("Критерий сортировки не может быть пустым. Попробуйте ещё раз.");
                     continue;
@@ -49,17 +53,17 @@ public class AppDemoControllerSorter {
                 String key = sortType.toLowerCase();
 
                 switch (key) {
-                    case "звезды" -> {
+                    case "звезды","1" -> {
                         sorter.sortRoomByStars(rooms);
                         view.showMessage("Номера отсортированы по количеству звёзд.");
                         return;
                     }
-                    case "вместимость" -> {
+                    case "вместимость","2" -> {
                         sorter.sortRoomByCapacity(rooms);
                         view.showMessage("Номера отсортированы по вместимости.");
                         return;
                     }
-                    case "цена" -> {
+                    case "цена","3" -> {
                         sorter.sortRoomByPrice(rooms);
                         view.showMessage("Номера отсортированы по цене.");
                         return;
@@ -69,7 +73,7 @@ public class AppDemoControllerSorter {
             }
         } catch (Exception e) {
             view.showError("При сортировке номеров произошла непредвиденная ошибка. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 
@@ -79,13 +83,17 @@ public class AppDemoControllerSorter {
         try {
             while (true) {
                 String sortType = view.askString(
-                        "Выберите критерий сортировки свободных номеров (введите слово):\n" +
-                                " - звезды\n" +
-                                " - вместимость\n" +
-                                " - цена\n" +
+                        "Выберите критерий сортировки свободных номеров (введите слово)\n" +
+                                " - Звезды\n" +
+                                " - Вместимость\n" +
+                                " - Цена\n" +
+                                " - 0 для выхода" +
                                 "Ваш выбор:"
                 );
-
+                if(view.commandBack(sortType)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (sortType == null || sortType.isBlank()) {
                     view.showMessage("Критерий сортировки не может быть пустым. Попробуйте ещё раз.");
                     continue;
@@ -94,17 +102,17 @@ public class AppDemoControllerSorter {
                 String key = sortType.toLowerCase();
 
                 switch (key) {
-                    case "звезды" -> {
+                    case "звезды","1" -> {
                         sorter.freeSortRoomByStars(rooms);
                         view.showMessage("Свободные номера отсортированы по количеству звёзд.");
                         return;
                     }
-                    case "вместимость" -> {
+                    case "вместимость","2" -> {
                         sorter.freeSortRoomByCapacity(rooms);
                         view.showMessage("Свободные номера отсортированы по вместимости.");
                         return;
                     }
-                    case "цена" -> {
+                    case "цена","3" -> {
                         sorter.freeSortRoomByPrice(rooms);
                         view.showMessage("Свободные номера отсортированы по цене.");
                         return;
@@ -114,7 +122,7 @@ public class AppDemoControllerSorter {
             }
         } catch (Exception e) {
             view.showError("При сортировке свободных номеров произошла непредвиденная ошибка. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 
@@ -125,7 +133,7 @@ public class AppDemoControllerSorter {
             view.showGuests(sorted);
         } catch (Exception e) {
             view.showError("Не удалось вывести список гостей. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 
@@ -135,7 +143,11 @@ public class AppDemoControllerSorter {
         try {
             String number;
             while (true) {
-                number = view.askString("Введите номер комнаты, чтобы увидеть последних 3 гостей:");
+                number = view.askString("Введите номер комнаты, чтобы увидеть последних 3 гостей или 0 для выхода");
+                if (view.commandBack(number)){
+                    view.showMessage("Команда назад выполнена");
+                    return;
+                }
                 if (rooms.getRoomsNumbers().contains(number)) {
                     break;
                 } else {
@@ -148,17 +160,39 @@ public class AppDemoControllerSorter {
 
         } catch (Exception e) {
             view.showError("Не удалось получить информацию о последних гостях комнаты. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 
     public void guestServices() {
         view.showMessage("\n=== Список услуг гостя ===");
         try {
+            // НЕ РАБОТАЕТ ===============================================================================================
+            String number;
+            while (true){
+                number = view.askString("Введите номер, в котором проживает нужный гость или 0 для выхода");
+                if (view.commandBack(number)){
+                    view.showMessage("Команда назад выполнена");
+                    return;
+                }
+                if(rooms.getRoomsNumbers().contains(number)){
+                    view.showMessage("Номер есть в отеле");
+                    break;
+                }
+                else{
+                    view.showMessage("Номера нету в отеле. Попробуйте еще раз");
+                }
+            }
+
             String name;
             while (true) {
-                name = view.askString("Введите имя гостя, для которого нужно показать услуги:");
-                if (guests.getAllGuestEntries().contains(name)) {
+
+                name = view.askString("Введите имя гостя, для которого нужно показать услуги или 0 для выхода");
+                if (view.commandBack(name)){
+                    view.showMessage("Команда назад выполнена");
+                    return;
+                }
+                if (guests.getListOfPeople(number).contains(name)) {
                     view.showMessage("Гость \"" + name + "\" найден в отеле.");
                     break;
                 } else {
@@ -168,14 +202,14 @@ public class AppDemoControllerSorter {
             }
 
             boolean sortByPrice = view.askBool(
-                    "Отсортировать услуги по цене? (да/нет):"
+                    "Отсортировать услуги по цене? (да/нет)"
             );
 
             view.printGuestServices(name, usage, sortByPrice);
 
         } catch (Exception e) {
             view.showError("Не удалось вывести список услуг гостя. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 
@@ -186,7 +220,7 @@ public class AppDemoControllerSorter {
             view.printPrices(rooms, catalog);
         } catch (Exception e) {
             view.showError("Не удалось вывести цены. Попробуйте ещё раз.\n" +
-                    "Технические детали: " + e.getMessage());
+                    "Технические детали " + e.getMessage());
         }
     }
 
@@ -196,7 +230,11 @@ public class AppDemoControllerSorter {
         try {
             String number;
             while (true) {
-                number = view.askString("Введите номер комнаты, чтобы узнать детали:");
+                number = view.askString("Введите номер комнаты, чтобы узнать детали или 0 для выхода");
+                if(view.commandBack(number)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (rooms.getRoomsNumbers().contains(number)) {
                     break;
                 } else {
@@ -209,7 +247,7 @@ public class AppDemoControllerSorter {
 
         } catch (Exception e) {
             view.showError("Не удалось вывести детали комнаты. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 }

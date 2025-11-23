@@ -28,11 +28,12 @@
                 AppDemoControllerSorter controllerSorter = new AppDemoControllerSorter(rooms, guests, sorter, catalog, usage, view);
 
                 ControllersMenu controllersMenu = new ControllersMenu(controllerRooms, controllerGuests, controllerService, controllerSorter, view);
-                view.help();
+
                 try ( Scanner sc = new Scanner(System.in) ){
 
                     while (true){
-                        System.out.print("> (help - список команд) ");
+                        view.help();
+                        System.out.print("> (help - список команд, выбор подгруппы) ");
                         if(!sc.hasNextLine()) break;
                         String line = sc.nextLine().trim();
                         if(line.isEmpty()) continue;
@@ -53,7 +54,7 @@
 
                             case "help", "помощь" -> view.help();
 
-                            case "выход","exit", "quit" -> {
+                            case "выход","exit", "quit", "0" -> {
                                 System.out.println("Программа завершена.");
                                 return;
                             }

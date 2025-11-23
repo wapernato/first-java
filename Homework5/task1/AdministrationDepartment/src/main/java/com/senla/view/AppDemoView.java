@@ -28,7 +28,14 @@ public class AppDemoView {
         return in.nextLine().trim();
     }
 
+    public boolean commandBack(String cmd){
+        return cmd.equals("0") || cmd.equalsIgnoreCase("назад");
+    }
 
+    public boolean commandBackInt(int cmd){
+        String line = Integer.toString(cmd);
+        return line.equals("0")|| line.equalsIgnoreCase("назад");
+    }
 
     public int askInt(String prompt) {
         while (true) {
@@ -130,10 +137,11 @@ public class AppDemoView {
         System.out.println();
         System.out.println("========= ДОСТУПНЫЕ КОМАНДЫ =========");
         System.out.println("1) Добавить комнату");
-        System.out.println("2) изменить цену комнаты");
-        System.out.println("3) изменить статус комнаты");
-        System.out.println("4) общее число свободных номеров");
-        System.out.println("5) свободные номера на определенную дату");
+        System.out.println("2) Изменить цену комнаты");
+        System.out.println("3) Изменить статус комнаты");
+        System.out.println("4) Общее число свободных номеров");
+        System.out.println("5) Свободные номера на определенную дату");
+        System.out.println("0) Назад");
         System.out.println("======================================");
         System.out.println();
     }
@@ -148,6 +156,7 @@ public class AppDemoView {
         System.out.println("5) Цены услуг и номеров");
         System.out.println("6) Последние 3 жильца");
         System.out.println("7) Узнать детали комнаты");
+        System.out.println("0) Назад");
         System.out.println("======================================");
         System.out.println();
     }
@@ -158,6 +167,7 @@ public class AppDemoView {
         System.out.println("2) Общее число постояльцев");
         System.out.println("3) Сумма, которую должен постоялец");
         System.out.println("4) Удалить человека из номера");
+        System.out.println("0) Назад");
         System.out.println("======================================");
         System.out.println();
     }
@@ -167,6 +177,7 @@ public class AppDemoView {
         System.out.println("1) Добавить услугу");
         System.out.println("2) Изменить цену услуги");
         System.out.println("3) Записать услугу на гостя");
+        System.out.println("0) Назад");
         System.out.println("======================================");
         System.out.println();
     }
@@ -177,6 +188,7 @@ public class AppDemoView {
         System.out.println("2) Работа с гостями");
         System.out.println("3) Работа с сервисами");
         System.out.println("4) Работа с деталями комнаты");
+        System.out.println("0) Завершить программу");
         System.out.println("======================================");
         System.out.println();
     }

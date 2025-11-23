@@ -26,10 +26,12 @@ public class ControllersMenu {
         this.view = view;
     }
 
+
     public void menuRooms() {
-        view.helpRooms();
+
         while (true) {
-            String line = view.askString("> ");
+            view.helpRooms();
+            String line = view.askString("> (help - список команд, подгруппа комнат) ");
             if (line.isEmpty()) {
                 continue;
             }
@@ -51,9 +53,10 @@ public class ControllersMenu {
     }
 
     public void menuGuest() {
-        view.helpGuest();
+
         while (true) {
-            String line = view.askString("> ");
+            view.helpGuest();
+            String line = view.askString("> (help - список команд, подгруппа гости) ");
             if (line.isEmpty()) {
                 continue;
             }
@@ -64,6 +67,7 @@ public class ControllersMenu {
                 case "2", "общее число постояльцев сегодня" -> guestsController.countActiveGuestsToday();
                 case "3", "сколько должен платить постоялец" -> guestsController.computeRoomCharge();
                 case "4", "удалить человека из номера" -> guestsController.removePeopleFromRoom();
+                case "help" -> view.helpGuest();
                 case "0" -> {
                     return;
                 }
@@ -73,9 +77,10 @@ public class ControllersMenu {
 
     public void menuService() {
 
-        view.helpService();
+
         while (true) {
-            String line = view.askString("> ");
+            view.helpService();
+            String line = view.askString("> (help - список команд, подгруппа сервисы) ");
             if (line.isEmpty()) {
                 continue;
             }
@@ -85,6 +90,7 @@ public class ControllersMenu {
                 case "1", "добавить услугу" -> serviceController.addService();
                 case "2", "изменить цену услуги" -> serviceController.setServicePrice();
                 case "3", "записать услугу на гостя" -> serviceController.addUsageFromCatalog();
+                case "help" -> view.helpService();
                 case "0" -> {
                     return;
                 }
@@ -94,9 +100,10 @@ public class ControllersMenu {
 
     public void menuDetails() {
 
-        view.helpDetails();
+
         while (true) {
-            String line = view.askString("> ");
+            view.helpDetails();
+            String line = view.askString("> (help - список команд, подгруппа детали) ");
             if (line.isEmpty()) {
                 continue;
             }
@@ -110,6 +117,7 @@ public class ControllersMenu {
                 case "5", "цены услуг и номеров" -> sorterController.prices();
                 case "6", "последние 3 жильца" -> sorterController.last3GuestsOfRoom();
                 case "7", "узнать детали комнаты" -> sorterController.roomDetails();
+                case "help" -> view.helpDetails();
                 case "0" -> {
                     return;
                 }

@@ -40,8 +40,12 @@ public class AppDemoControllerGuests {
             String number;
             while (true) {
                 number = view.askString(
-                        "Введите номер комнаты, в которую нужно заселить гостя:"
+                        "Введите номер комнаты, в которую нужно заселить гостя или 0 для возврата"
                 );
+                if(view.commandBack(number)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
 
                 if (rooms.getRoomsNumbers().contains(number)) {
                     view.showMessage("Комната №" + number + " найдена в отеле.");
@@ -53,14 +57,14 @@ public class AppDemoControllerGuests {
             }
 
 
-            String name = view.askString("Введите имя гостя:");
+            String name = view.askString("Введите имя гостя");
 
 
             LocalDate date;
             while (true) {
                 try {
                     date = view.askDate(
-                            "Укажите дату заезда гостя (формат ГГГГ-ММ-ДД, например 2024-10-12):"
+                            "Укажите дату заезда гостя (формат ГГГГ-ММ-ДД, например 2024-10-12)"
                     );
                 } catch (DateTimeParseException e) {
                     view.showMessage("Неверный формат даты. Используйте формат ГГГГ-ММ-ДД. Попробуйте ещё раз.");
@@ -79,7 +83,7 @@ public class AppDemoControllerGuests {
             int night;
             while (true) {
                 night = view.askInt(
-                        "Укажите на сколько ночей бронируется проживание (целое число > 0):"
+                        "Укажите на сколько ночей бронируется проживание (целое число > 0)"
                 );
 
                 if (night > 0) {
@@ -89,19 +93,26 @@ public class AppDemoControllerGuests {
                 }
             }
 
-            // --- Добавление гостя ---
+
             guests.addHuman(number, name, date, night);
             LocalDate exit = date.plusDays(night);
+            if(guests.getListOfPeople(number).contains(name)) {
+                String message = """
+                        Гость %s
+                        Забронировал комнату №%s
+                        С %s по %s
+                        (ночей: %d).
+                        """.formatted(name, number, date, exit, night);
 
-            view.showMessage("Гость " + name +
-                    " забронирован в комнату №" + number +
-                    " с " + date + " по " + exit +
-                    " (ночей: " + night + ").");
-
+                view.showMessage(message);
+            }
+            else {
+                view.showMessage("Не получилось добавить. Причина в комнате нету свободных мест.");
+            }
         } catch (Exception e) {
             view.showError("При добавлении гостя произошла непредвиденная ошибка. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
-                    "Технические детали: " + e.getMessage());
+                    "Технические детали " + e.getMessage());
         }
     }
 
@@ -115,27 +126,12 @@ public class AppDemoControllerGuests {
     public void computeRoomCharge() {
         view.showMessage("\n=== Расчёт стоимости проживания гостя ===");
         try {
-            // --- Имя гостя ---
-            String name;
-            while (true) {
-                name = view.askString(
-                        "Введите имя гостя, для которого нужно посчитать стоимость проживания:"
-                );
+            // НЕ РАБОТАЕТ ===============================================================================================
 
-                if (guests.getAllGuestEntries().contains(name)) {
-                    view.showMessage("Гость \"" + name + "\" найден в списке проживающих.");
-                    break;
-                } else {
-                    view.showMessage("Гостя с именем \"" + name +
-                            "\" сейчас нет в отеле. Проверьте имя и попробуйте ещё раз.");
-                }
-            }
-
-            // --- Номер комнаты ---
             String number;
             while (true) {
                 number = view.askString(
-                        "Введите номер комнаты, в которой проживает этот гость:"
+                        "Введите номер комнаты, в которой проживает этот гость"
                 );
 
                 if (rooms.getRoomsNumbers().contains(number)) {
@@ -146,7 +142,28 @@ public class AppDemoControllerGuests {
                 }
             }
 
-            // --- Расчёт ---
+            String name;
+            while (true) {
+                name = view.askString(
+                        "Введите имя гостя, для которого нужно посчитать стоимость проживания или 0 для возврата"
+                );
+                if(view.commandBack(name)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
+                if (guests.getListOfPeople(number).contains(name)) { // guests.getAllGuestEntries().contains(name)
+                    view.showMessage("Гость \"" + name + "\" найден в списке проживающих.");
+                    break;
+                } else {
+                    view.showMessage("Гостя с именем \"" + name +
+                            "\" сейчас нет в отеле. Проверьте имя и попробуйте ещё раз.");
+                }
+            }
+
+
+
+
+
             double guestService = usage.listByGuest(name)
                     .stream()
                     .mapToDouble(u -> u.price)
@@ -170,7 +187,7 @@ public class AppDemoControllerGuests {
 
         } catch (Exception e) {
             view.showError("При расчёте стоимости проживания произошла ошибка. " +
-                    "Попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 
@@ -180,9 +197,12 @@ public class AppDemoControllerGuests {
             String number;
             while (true) {
                 number = view.askString(
-                        "Введите номер комнаты, которую нужно освободить:"
+                        "Введите номер комнаты, которую нужно освободить или 0 для возврата"
                 );
-
+                if(view.commandBack(number)){
+                    view.showMessage("Вы вернулись назад");
+                    return;
+                }
                 if (rooms.getRoomsNumbers().contains(number)) {
                     break;
                 } else {
@@ -197,7 +217,7 @@ public class AppDemoControllerGuests {
         } catch (Exception e) {
             view.showError("Не удалось освободить комнату. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
-                    "Технические детали: " + e.getMessage());
+                    "Технические детали " + e.getMessage());
         }
     }
 
@@ -209,7 +229,7 @@ public class AppDemoControllerGuests {
             view.showMessage("Импорт списка гостей из файла успешно завершён.");
         } catch (Exception e) {
             view.showError("Не удалось импортировать список гостей из файла. " +
-                    "Проверьте файл и попробуйте ещё раз.\nТехнические детали: " + e.getMessage());
+                    "Проверьте файл и попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
 }
