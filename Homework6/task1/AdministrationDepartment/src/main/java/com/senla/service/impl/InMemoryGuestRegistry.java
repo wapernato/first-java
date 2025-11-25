@@ -124,6 +124,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
     }
 
 
+    // оптимизировать
     @Override
     public void freeRooms() {
         LocalDate today = LocalDate.now();
@@ -175,7 +176,6 @@ public class InMemoryGuestRegistry implements GuestRegistry {
 
     @Override
     public List<GuestRegistry.GuestEntry> getAllGuestEntries() {
-        // if GuestEntry is a record (roomId, guest, start, end, id)
         return staysById.values().stream()
                 .sorted(Comparator.comparing(Stay::start))
                 .map(s -> new GuestRegistry.GuestEntry(s.roomId, s.guest, s.start, s.end, s.id))
@@ -214,6 +214,8 @@ public class InMemoryGuestRegistry implements GuestRegistry {
                 .collect(Collectors.toList());
     }
 
+
+    // улучшить
     @Override
     public double computeRoomCharge(String roomId, String guestName) {
         Room r = rooms.getRoom(roomId);
@@ -257,6 +259,12 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         return x;
     }
 
+    public Set<Integer> getGuestId() {
+        return Collections.unmodifiableSet(staysById.keySet());
+    }
+
+
+    // добавить проверки
     @Override
     public void setGuestStats(String newRoomNumber, String guest, LocalDate start, LocalDate end, int id) {
 
@@ -272,42 +280,4 @@ public class InMemoryGuestRegistry implements GuestRegistry {
         if (old != null) refreshRoomOccupancy(old.roomId);
     }
 
-
-
-    public Set<Integer> getGuestId() {
-        return Collections.unmodifiableSet(staysById.keySet());
-    }
-
-    public void setGuestStats(int id, String newRoomNumber) {
-        Stay old = staysById.get(id);
-        if (old == null) {
-            System.out.println("Нет заселения с id=" + id);
-            return;
-        }
-
-        Room newRoom = rooms.getRoom(newRoomNumber);
-        if (newRoom == null) {
-            System.out.println("Нет номера: " + newRoomNumber);
-            return;
-        }
-
-        if (newRoomNumber.equals(old.roomId)) return;
-
-        long overlapping = staysInRoom(newRoomNumber).stream()
-                .filter(s -> overlaps(s.start, s.end, old.start, old.end))
-                .count();
-
-        if (overlapping >= newRoom.capacity()) {
-            System.out.println("Номер " + newRoomNumber + " переполнен на период "
-                    + old.start + "–" + old.end);
-            return;
-        }
-
-        removeStayIdFromRoomIndex(old.roomId, id);
-        staysById.put(id, new Stay(newRoomNumber, old.guest, old.start, old.end, old.id));
-        stayIdsByRoom.computeIfAbsent(newRoomNumber, k -> new ArrayList<>()).add(id);
-
-        refreshRoomOccupancy(old.roomId);
-        refreshRoomOccupancy(newRoomNumber);
-    }
 }
