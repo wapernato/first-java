@@ -13,6 +13,7 @@ public class ControllersMenu {
     private final AppDemoControllerService serviceController;
     private final AppDemoControllerSorter sorterController;
     private final AppDemoControllerImport importController;
+    private final AppDemoControllerExport exportController;
     private final AppDemoView view;
 
     public ControllersMenu(AppDemoControllerRooms roomsController,
@@ -20,12 +21,14 @@ public class ControllersMenu {
                            AppDemoControllerService serviceController,
                            AppDemoControllerSorter sorterController,
                            AppDemoControllerImport importController,
+                           AppDemoControllerExport exportController,
                            AppDemoView view) {
         this.roomsController = roomsController;
         this.guestsController = guestsController;
         this.serviceController = serviceController;
         this.sorterController = sorterController;
         this.importController = importController;
+        this.exportController = exportController;
         this.view = view;
     }
     public void menuImport(){
@@ -41,6 +44,26 @@ public class ControllersMenu {
                 case "1","импорт комнат" -> importController.roomsImport();
                 case "2","импорт гостей" -> importController.guestImport();
                 case "3","импорт сервисов" -> importController.serviceImport();
+                case "0","назад" -> {
+                    return;
+                }
+            }
+        }
+    }
+
+    public void menuExport(){
+        while (true){
+            view.helpExport();
+            String line = view.askString("> (help - список команд, подгруппа экспорт) ");
+            if (line.isEmpty()) {
+                continue;
+            }
+
+            String cmd = line.toLowerCase();
+            switch (cmd){
+                case "1","экспорт комнат" -> exportController.roomsExport();
+                case "2","экспорт гостей" -> exportController.guestExport();
+                case "3","экспорт сервисов" -> exportController.serviceExport();
                 case "0","назад" -> {
                     return;
                 }
@@ -81,7 +104,6 @@ public class ControllersMenu {
             if (line.isEmpty()) {
                 continue;
             }
-
             String cmd = line.toLowerCase();
             switch (cmd) {
                 case "1", "добавить гостя" -> guestsController.addHuman();

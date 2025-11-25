@@ -21,14 +21,16 @@ public class AppDemo {
         ServiceUsageRegistry usage = new InMemoryServiceUsageRegistry();
         AppDemoView view = new AppDemoView();
         WorksWithFilesImport importt = new ImportFiles(rooms, guests);
+        WorksWithFilesExport export = new ExportFiles(rooms, guests, catalog);
 
-        AppDemoControllerImport importComtroller = new AppDemoControllerImport(rooms, guests, sorter, catalog, usage, view, importt);
+        AppDemoControllerExport exportController = new AppDemoControllerExport(rooms, guests, sorter, catalog, usage, view, export);
+        AppDemoControllerImport importController = new AppDemoControllerImport(rooms, guests, sorter, catalog, usage, view, importt);
         AppDemoControllerRooms controllerRooms = new AppDemoControllerRooms(rooms, guests, sorter, catalog, usage, view, importt);
         AppDemoControllerGuests controllerGuests = new AppDemoControllerGuests(rooms, guests, sorter, catalog, usage, view, importt);
         AppDemoControllerService controllerService = new AppDemoControllerService(rooms, guests, sorter, catalog, usage, view);
         AppDemoControllerSorter controllerSorter = new AppDemoControllerSorter(rooms, guests, sorter, catalog, usage, view);
 
-        ControllersMenu controllersMenu = new ControllersMenu(controllerRooms, controllerGuests, controllerService, controllerSorter,importComtroller, view);
+        ControllersMenu controllersMenu = new ControllersMenu(controllerRooms, controllerGuests, controllerService, controllerSorter,importController, exportController, view);
 
         try ( Scanner sc = new Scanner(System.in) ){
 
@@ -40,6 +42,7 @@ public class AppDemo {
                 if(line.isEmpty()) continue;
 
                 String cmd = line.toLowerCase();
+                // добавить для каждой команды экспорта универсальную проверку
 
 
                 switch (cmd){
@@ -48,6 +51,7 @@ public class AppDemo {
                     case "3", "работа с сервисом" -> controllersMenu.menuService();
                     case "4", "работа с деталями комнат" -> controllersMenu.menuDetails();
                     case "5", "импорт" ->  controllersMenu.menuImport();
+                    case "6", "экспорт" -> controllersMenu.menuExport();
 
                     //                        case "123" -> guests.getRoomId();
                     //                        case "импортировать список гостей" -> controllerGuests.guestImport(); // 20

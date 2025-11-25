@@ -12,8 +12,13 @@ import java.util.*;
 
 public class InMemoryRooms implements Rooms {
     private final Map<String, Room> rooms = new HashMap<>();
+    private Set<Integer> roomIds = new HashSet<>();
+
     private int nextId = 1;
 
+    public Set<Integer> getRoomId(){
+        return roomIds;
+    }
 
     @Override
     public Set<String> getRoomsNumbers() {
@@ -34,7 +39,6 @@ public class InMemoryRooms implements Rooms {
 
 
 
-    // --------------------check this--------------------------
     @Override
     public void addRoom(String number, int capacity, int stars) {
         if (rooms.containsKey(number)) {
@@ -55,7 +59,7 @@ public class InMemoryRooms implements Rooms {
         r.setCapacity(capacity);
         r.setStars(stars);
         rooms.put(number, r);
-        System.out.println(id);
+        roomIds.add(id);
     }
 
 

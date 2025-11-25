@@ -6,6 +6,7 @@ import com.senla.model.RoomStatus;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -15,7 +16,7 @@ public interface Rooms {
 
     Set<String> getRoomsNumbers();
     Set<String> freeRoomsNumber();
-
+    Set<Integer> getRoomId();
 
     //List<String> freeRooms();
     void addRoom(String number, int capacity, int stars);

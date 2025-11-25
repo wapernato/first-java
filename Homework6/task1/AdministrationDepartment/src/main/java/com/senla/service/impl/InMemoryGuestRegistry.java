@@ -1,3 +1,4 @@
+
 package com.senla.service.impl;
 
 import com.senla.model.OccupancyStatus;
@@ -6,260 +7,307 @@ import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public class InMemoryGuestRegistry implements GuestRegistry {
-    private int nextId = 1;
-
-    private static final class Stay {
-        final int id;
-        final String roomId;
-        final String guest;
-        final LocalDate start;
-        final LocalDate end;
-
-        Stay(String roomId, String guest, LocalDate start, LocalDate end, int id) {
-            if (!end.isAfter(start)) {
-                throw new IllegalArgumentException("end должен быть позже start");
-            }
-            this.id = id;
-            this.roomId = roomId;
-            this.guest = guest;
-            this.start = start;
-            this.end = end;
-        }
-        // проверяет живут ли в номере в данный момент
-        boolean activeOn(LocalDate date) {
-            // start <= date < end
-            return !date.isBefore(start) && date.isBefore(end);
-        }
-    }
-
-
-    private final Map<String, List<Stay>> staysByRoom = new HashMap<>();
 
     private final Rooms rooms;
+
+    private final Map<Integer, Stay> staysById = new HashMap<>();
+    private final Map<String, List<Integer>> stayIdsByRoom = new HashMap<>();
+
+    private int nextId = 1;
 
     public InMemoryGuestRegistry(Rooms rooms) {
         this.rooms = rooms;
     }
 
 
+    public static class Stay {
+        private final String roomId;
+        private final String guest;
+        private final LocalDate start;
+        private final LocalDate end;
+        private final int id;
 
-    private static boolean overlaps(LocalDate s1, LocalDate e1, LocalDate s2, LocalDate e2) {
-        // Есть пересечение, если НЕ (e1 <= s2 || e2 <= s1)
+        public Stay(String roomId, String guest, LocalDate start, LocalDate end, int id) {
+            this.roomId = roomId;
+            this.guest = guest;
+            this.start = start;
+            this.end = end;
+            this.id = id;
+        }
+
+        public String roomId() { return roomId; }
+        public String guest() { return guest; }
+        public LocalDate start() { return start; }
+        public LocalDate end() { return end; }
+        public int id() { return id; }
+    }
+
+
+
+    private boolean overlaps(LocalDate s1, LocalDate e1, LocalDate s2, LocalDate e2) {
+        // intersection if NOT (e1 <= s2 OR e2 <= s1)
         return !( !e1.isAfter(s2) || !e2.isAfter(s1) );
     }
 
-    private LocalDate today() {
-        return LocalDate.now();
+    private List<Stay> staysInRoom(String roomId) {
+        return stayIdsByRoom.getOrDefault(roomId, List.of()).stream()
+                .map(staysById::get)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
+    private void removeStayIdFromRoomIndex(String roomId, int stayId) {
+        List<Integer> ids = stayIdsByRoom.get(roomId);
+        if (ids == null) return;
+        ids.remove(Integer.valueOf(stayId));
+        if (ids.isEmpty()) stayIdsByRoom.remove(roomId);
+    }
 
-    private void refreshOccupancyToday(String roomId) {
+    private void refreshRoomOccupancy(String roomId) {
         Room room = rooms.getRoom(roomId);
         if (room == null) return;
-        LocalDate today = today();
-        boolean occupied = staysByRoom.getOrDefault(roomId, List.of()).stream()
-                .anyMatch(s -> s.activeOn(today));
+
+        LocalDate today = LocalDate.now();
+        boolean occupied = staysInRoom(roomId).stream()
+                .anyMatch(s -> overlaps(s.start, s.end, today, today.plusDays(1)));
+
         room.setOccupancyStatus(occupied ? OccupancyStatus.OCCUPIED : OccupancyStatus.VACANT);
     }
 
 
-    private void refreshAllOccupancyToday() {
-        for (String id : rooms.getRoomsNumbers()) {
-            refreshOccupancyToday(id);
-        }
-    }
-
-
-
     @Override
     public List<String> getListOfPeople(String roomId) {
-        LocalDate today = today();
-        return staysByRoom.getOrDefault(roomId, List.of()).stream()
-                .filter(s -> s.activeOn(today))
-                .map(s -> s.guest)
-                .collect(Collectors.toUnmodifiableList());
+        refreshRoomOccupancy(roomId);
+
+        return staysInRoom(roomId).stream()
+                .map(Stay::guest)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void addHuman(String roomId, String human, LocalDate checkIn, int nights) {
-        if (roomId == null || human == null || checkIn == null) {
-            System.out.println("Некорректные параметры (roomId/human/checkIn)");
-            return;
-        }
         Room room = rooms.getRoom(roomId);
         if (room == null) {
-            System.out.println("Комнаты " + roomId + " не существует");
-            return;
-        }
-        if (!rooms.isRoomBookable(roomId)) {
-            System.out.println("Комната " + roomId + " в ремонте или обслуживании");
+            System.out.println("Нет такого номера: " + roomId);
             return;
         }
         if (nights <= 0) {
-            System.out.println("Длительность проживания (ночей) должна быть > 0");
+            System.out.println("Количество ночей должно быть > 0");
             return;
         }
 
-
         LocalDate checkOut = checkIn.plusDays(nights); // [checkIn, checkOut)
-        List<Stay> stays = staysByRoom.computeIfAbsent(roomId, k -> new ArrayList<>());
 
-        // Сколько уже гостей в пересекающемся интервале?
-        long overlapping = stays.stream()
+
+        long overlapping = staysInRoom(roomId).stream()
                 .filter(s -> overlaps(s.start, s.end, checkIn, checkOut))
                 .count();
 
         if (overlapping >= room.capacity()) {
-            System.out.println("Номер " + roomId + " переполнен на период " + checkIn + "–" + checkOut +
-                    ". Вместимость: " + room.capacity());
+            System.out.println("Номер " + roomId + " переполнен на период " +
+                    checkIn + "–" + checkOut + ". Вместимость: " + room.capacity());
             return;
         }
-        int id = nextId++;
-        stays.add(new Stay(roomId, human, checkIn, checkOut, id));
-        // После добавления — обновим статус на сегодня.
 
-        System.out.println(id);
+        int id = nextId++;
+        Stay stay = new Stay(roomId, human, checkIn, checkOut, id);
+
+        staysById.put(id, stay);
+        stayIdsByRoom.computeIfAbsent(roomId, k -> new ArrayList<>()).add(id);
+
+        room.setOccupancyStatus(OccupancyStatus.OCCUPIED);
     }
+
+
+    @Override
+    public void freeRooms() {
+        LocalDate today = LocalDate.now();
+
+        Iterator<Map.Entry<Integer, Stay>> it = staysById.entrySet().iterator();
+        while (it.hasNext()) {
+            Stay s = it.next().getValue();
+            if (!s.end.isAfter(today)) {
+                it.remove();
+                removeStayIdFromRoomIndex(s.roomId, s.id);
+            }
+        }
+
+        for (String number : rooms.getRoomsNumbers()) {
+            refreshRoomOccupancy(number);
+        }
+    }
+
 
     @Override
     public Map<String, List<String>> AllWhoLivesInRooms() {
-        LocalDate today = today();
-        Map<String, List<String>> res = new LinkedHashMap<>();
-        for (String num : rooms.getRoomsNumbers()) {
-            List<String> guestsToday = staysByRoom.getOrDefault(num, List.of()).stream()
-                    .filter(s -> s.activeOn(today))
-                    .map(s -> s.guest)
-                    .toList();
-            if (!guestsToday.isEmpty()) {
-                res.put(num, guestsToday);
-            }
+        freeRooms();
+
+        Map<String, List<String>> res = new HashMap<>();
+        for (String roomId : stayIdsByRoom.keySet()) {
+            List<String> guests = staysInRoom(roomId).stream()
+                    .map(Stay::guest)
+                    .collect(Collectors.toList());
+            res.put(roomId, guests);
         }
         return res;
     }
 
-    @Override
-    public void freeRooms() {
-        // Сначала синхронизируем статусы на сегодня.
-        refreshAllOccupancyToday();
 
-        List<String> freeRooms = new ArrayList<>();
-        for (String num : rooms.getRoomsNumbers()) {
-            Room r = rooms.getRoom(num);
-            if (r != null && r.occupancyStatus() == OccupancyStatus.VACANT && rooms.isRoomBookable(num)) {
-                freeRooms.add(num);
-            }
-        }
-        for (int i = 0; i < freeRooms.size(); i++) {
-            System.out.println((i + 1) + ": " + freeRooms.get(i));
-        }
-        if (freeRooms.isEmpty()) {
-            System.out.println("Свободных комнат на сегодня нет");
-        }
-    }
 
     @Override
     public void CountFreeRooms() {
-        refreshAllOccupancyToday();
+        freeRooms();
 
-        long free = rooms.getRoomsNumbers().stream()
-                .map(rooms::getRoom)
-                .filter(Objects::nonNull)
-                .filter(r -> r.occupancyStatus() == OccupancyStatus.VACANT)
-                .filter(r -> rooms.isRoomBookable(r.number()))
-                .count();
-
-        System.out.println("Все свободные комнаты на данный момент: " + free);
+        int free = 0;
+        for (String number : rooms.getRoomsNumbers()) {
+            Room r = rooms.getRoom(number);
+            if (r != null && r.occupancyStatus() == OccupancyStatus.VACANT) {
+                free++;
+            }
+        }
+        System.out.println("Свободных номеров: " + free);
     }
 
     @Override
     public List<GuestRegistry.GuestEntry> getAllGuestEntries() {
-        var all = new java.util.ArrayList<GuestRegistry.GuestEntry>();
-        staysByRoom.forEach((roomId, stays) -> {
-            for (var s : stays) {
-                all.add(new GuestRegistry.GuestEntry(s.guest, roomId, s.start, s.end, s.id));
-            }
-        });
-        return java.util.List.copyOf(all);
+        // if GuestEntry is a record (roomId, guest, start, end, id)
+        return staysById.values().stream()
+                .sorted(Comparator.comparing(Stay::start))
+                .map(s -> new GuestRegistry.GuestEntry(s.roomId, s.guest, s.start, s.end, s.id))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void removePeopleFromRoom(String roomId) {
-        List<Stay> stays = staysByRoom.get(roomId);
-        if (stays == null || stays.isEmpty()) {
-            System.out.println("В комнате никого нет");
-            refreshOccupancyToday(roomId);
-            return;
-        }
-
-        LocalDate today = today();
-        // Удаляем только тех, кто живёт прямо сейчас; будущие брони не трогаем.
-        boolean removedAny = stays.removeIf(s -> s.activeOn(today));
-
-        if (!removedAny) {
-            System.out.println("На текущий момент в комнате никто не проживает");
-        }
-
-        refreshOccupancyToday(roomId);
-    }
-
-    @Override
-    public int countActiveGuestsToday() { // ================================================================ //
-        LocalDate today = today();
-        return (int) staysByRoom.values().stream()
-                .flatMap(List::stream)
-                .filter(s -> s.activeOn(today))
+    public int countActiveGuestsToday() {
+        LocalDate today = LocalDate.now();
+        return (int) staysById.values().stream()
+                .filter(s -> overlaps(s.start, s.end, today, today.plusDays(1)))
                 .count();
     }
-
 
     @Override
     public List<String> listRoomsFreeOn(LocalDate date) {
         List<String> free = new ArrayList<>();
-        for (String num : rooms.getRoomsNumbers()) {
-            if (!rooms.isRoomBookable(num)) continue;
-            boolean occupied = staysByRoom.getOrDefault(num, List.of()).stream()
-                    .anyMatch(s -> s.activeOn(date));
-            if (!occupied) free.add(num);
+        for (String roomId : rooms.getRoomsNumbers()) {
+            Room room = rooms.getRoom(roomId);
+            if (room == null) continue;
+
+            boolean occupied = staysInRoom(roomId).stream()
+                    .anyMatch(s -> overlaps(s.start, s.end, date, date.plusDays(1)));
+
+            if (!occupied) free.add(roomId);
         }
         return free;
     }
 
-
     @Override
     public List<GuestRegistry.GuestEntry> last3GuestsOfRoom(String roomId) {
-        var src = new ArrayList<GuestRegistry.GuestEntry>();
-        for (var s : staysByRoom.getOrDefault(roomId, List.of())) {
-            src.add(new GuestRegistry.GuestEntry( s.guest, s.roomId, s.start, s.end,s.id));
-        }
-        src.sort(Comparator.comparing((GuestRegistry.GuestEntry e) -> e.checkOut).reversed());
-        return src.size() > 3 ? src.subList(0, 3) : src;
+        return staysInRoom(roomId).stream()
+                .sorted(Comparator.comparing(Stay::end).reversed())
+                .limit(3)
+                .map(s -> new GuestRegistry.GuestEntry(s.roomId, s.guest, s.start, s.end, s.id))
+                .collect(Collectors.toList());
     }
-
 
     @Override
     public double computeRoomCharge(String roomId, String guestName) {
         Room r = rooms.getRoom(roomId);
         if (r == null) return 0.0;
-        // берём его последнюю (самую позднюю по выезду) бронь в этой комнате
-        Optional<Stay> opt = staysByRoom.getOrDefault(roomId, List.of()).stream()
-                .filter(s -> Objects.equals(s.guest, guestName))
-                .max(Comparator.comparing(s -> s.end));
-        if (opt.isEmpty()) return 0.0;
 
-        Stay s = opt.get();
-        long nights = java.time.temporal.ChronoUnit.DAYS.between(s.start, s.end);
+        Stay lastStay = staysInRoom(roomId).stream()
+                .filter(s -> Objects.equals(s.guest, guestName))
+                .max(Comparator.comparing(Stay::end))
+                .orElse(null);
+
+        if (lastStay == null) return 0.0;
+
+        long nights = ChronoUnit.DAYS.between(lastStay.start, lastStay.end);
         return r.price() * nights;
     }
 
-    public ArrayList<Object> getRoomId(){
+    @Override
+    public void removePeopleFromRoom(String roomId) {
+        List<Integer> ids = stayIdsByRoom.remove(roomId);
+        if (ids == null || ids.isEmpty()) {
+            System.out.println("Комната пуста: " + roomId);
+            return;
+        }
 
-        ArrayList<Object> x = new ArrayList<>(staysByRoom.values());
+        for (Integer id : ids) {
+            staysById.remove(id);
+        }
+
+        Room room = rooms.getRoom(roomId);
+        if (room != null) room.setOccupancyStatus(OccupancyStatus.VACANT);
+    }
+
+    @Override
+    public ArrayList<Object> getRoomId() {
+
+        ArrayList<Object> x = new ArrayList<>();
+        for (String roomId : stayIdsByRoom.keySet()) {
+            x.add(staysInRoom(roomId));
+        }
         System.out.println(x);
         return x;
+    }
+
+    @Override
+    public void setGuestStats(String newRoomNumber, String guest, LocalDate start, LocalDate end, int id) {
+
+        Stay old = staysById.get(id);
+        if (old != null) {
+            removeStayIdFromRoomIndex(old.roomId, id);
+        }
+        Stay stay = new Stay(newRoomNumber, guest, start, end, id);
+        staysById.put(id, stay);
+        stayIdsByRoom.computeIfAbsent(newRoomNumber, k -> new ArrayList<>()).add(id);
+
+        refreshRoomOccupancy(newRoomNumber);
+        if (old != null) refreshRoomOccupancy(old.roomId);
+    }
+
+
+
+    public Set<Integer> getGuestId() {
+        return Collections.unmodifiableSet(staysById.keySet());
+    }
+
+    public void setGuestStats(int id, String newRoomNumber) {
+        Stay old = staysById.get(id);
+        if (old == null) {
+            System.out.println("Нет заселения с id=" + id);
+            return;
+        }
+
+        Room newRoom = rooms.getRoom(newRoomNumber);
+        if (newRoom == null) {
+            System.out.println("Нет номера: " + newRoomNumber);
+            return;
+        }
+
+        if (newRoomNumber.equals(old.roomId)) return;
+
+        long overlapping = staysInRoom(newRoomNumber).stream()
+                .filter(s -> overlaps(s.start, s.end, old.start, old.end))
+                .count();
+
+        if (overlapping >= newRoom.capacity()) {
+            System.out.println("Номер " + newRoomNumber + " переполнен на период "
+                    + old.start + "–" + old.end);
+            return;
+        }
+
+        removeStayIdFromRoomIndex(old.roomId, id);
+        staysById.put(id, new Stay(newRoomNumber, old.guest, old.start, old.end, old.id));
+        stayIdsByRoom.computeIfAbsent(newRoomNumber, k -> new ArrayList<>()).add(id);
+
+        refreshRoomOccupancy(old.roomId);
+        refreshRoomOccupancy(newRoomNumber);
     }
 }

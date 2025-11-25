@@ -110,7 +110,6 @@ public class AppDemoControllerService {
                     "Технические детали " + e.getMessage());
         }
     }
-
     public void addUsageFromCatalog() {
         view.showMessage("\n=== Назначение услуги гостю ===");
         try {

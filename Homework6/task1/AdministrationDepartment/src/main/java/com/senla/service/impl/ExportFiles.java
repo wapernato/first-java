@@ -39,7 +39,7 @@ public class ExportFiles implements WorksWithFilesExport {
                 long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
 
                 String line = String.join(",",
-                        e.roomId,                         
+                        e.roomId,
                         e.guest,
                         checkIn.format(fmt),
                         String.valueOf(nights),

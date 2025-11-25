@@ -37,8 +37,13 @@ public class ImportFiles implements WorksWithFilesImport {
                 LocalDate date = LocalDate.parse(str[2], fmt);
                 int nights = Integer.parseInt(str[3]);
                 int id = Integer.parseInt(str[4]);
-                guest.addHuman(number, name, date, nights);
-
+                if(guest.getGuestId().contains(id)){
+                    System.out.println("Данный гость уже есть в отеле, поэтому перезапишем данные");
+                    guest.setGuestStats(number, name, date, date.plusDays(nights), id);
+                }
+                else {
+                    guest.addHuman(number, name, date, nights);
+                }
             }
         }catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
