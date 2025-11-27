@@ -29,5 +29,5 @@ public interface Rooms {
     //void getAllStatusRoom(String number);
 
     Room getRoom(String number);
-    boolean isRoomBookable(String number);
+    boolean isRoomBookable(int id);
 }

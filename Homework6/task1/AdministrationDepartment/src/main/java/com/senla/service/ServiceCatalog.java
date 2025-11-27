@@ -9,4 +9,5 @@ public interface ServiceCatalog {
     void setServicePrice(String name, double price);
     Set<String> listServiceNames();
     double getServicePrice(String name);
+
 }

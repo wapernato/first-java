@@ -8,40 +8,40 @@ import com.senla.service.Rooms;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class InMemoryRooms implements Rooms {
-    private final Map<String, Room> rooms = new HashMap<>();
-    private Set<Integer> roomIds = new HashSet<>();
 
+    private final Map<Integer, Room> roomsIds = new HashMap<>();
     private int nextId = 1;
 
     public Set<Integer> getRoomId(){
-        return roomIds;
+        return Collections.unmodifiableSet(roomsIds.keySet());
     }
 
     @Override
     public Set<String> getRoomsNumbers() {
-        return Collections.unmodifiableSet(rooms.keySet());
+        return roomsIds.values().stream()
+                .map(Room::number)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
     public Set<String> freeRoomsNumber() {
-        Set<String> out = new HashSet<>();
-        for (String num : getRoomsNumbers()) {
-            Room r = getRoom(num);
-            if (r != null && r.occupancyStatus() == OccupancyStatus.VACANT && r.status() == RoomStatus.AVAILABLE) {
-                out.add(num);
-            }
-        }
-        return out;
+        return roomsIds.values().stream()
+                .filter(r -> r.occupancyStatus() == OccupancyStatus.VACANT)
+                .filter(r -> r.status() == RoomStatus.AVAILABLE)
+                .map(Room::number)
+                .collect(Collectors.toUnmodifiableSet());
     }
+
 
 
 
     @Override
     public void addRoom(String number, int capacity, int stars) {
-        if (rooms.containsKey(number)) {
+        if (getRoomsNumbers().contains(number)) {
             System.out.println("Номер уже существует: " + number);
             return;
         }
@@ -55,56 +55,61 @@ public class InMemoryRooms implements Rooms {
         }
         int id = nextId++;
 
-        Room r = new Room(number, id);
-        r.setCapacity(capacity);
-        r.setStars(stars);
-        rooms.put(number, r);
-        roomIds.add(id);
+        Room r = new Room(number, capacity, stars);
+        roomsIds.put(id, r);
     }
 
 
 
     @Override
     public int count() {
-        return rooms.size();
+        return roomsIds.size();
     }
 
 
     @Override
-    public void setRoomStatus(String number, RoomStatus status) {
-        Room r = rooms.get(number);
+    public void setRoomStatus(String numberRoom, RoomStatus status) {
+        Room r = roomsIds.values().stream()
+                .filter(room -> room.number().equals(numberRoom))
+                .findFirst()
+                .orElse(null);
         if (r == null) {
-            System.out.println("Нет такого номера: " + number);
+            System.out.println("Нет такого номера: " + numberRoom);
             return;
         }
         r.setStatus(status);
-
     }
 
 
     @Override
-    public void setRoomPrice(String number, double price) {
+    public void setRoomPrice(String numberRoom, double price) {
         if (price < 0) {
             System.out.println("Цена не может быть отрицательной: " + price);
             return;
         }
-        Room r = rooms.get(number);
+        Room r = roomsIds.values().stream()
+                .filter(room -> room.number().equals(numberRoom))
+                .findFirst()
+                .orElse(null);
         if (r == null) {
-            System.out.println("Нет такого номера: " + number);
+            System.out.println("Нет такого номера: " + numberRoom);
             return;
         }
         r.setPrice(price);
     }
 
     @Override
-    public void setRoomCapacity(String number, int capacity){
+    public void setRoomCapacity(String numberRoom, int capacity){
         if ((capacity > 3) || (capacity < 0)){
             System.out.println("Вместимость в одну комнату должны быть не более 3-ех человек и не меньше 0");
             return;
         }
-        Room r = rooms.get(number);
+        Room r = roomsIds.values().stream()
+                .filter(room -> room.number().equals(numberRoom))
+                .findFirst()
+                .orElse(null);
         if (r == null){
-            System.out.println("Нет такого номера: " + number);
+            System.out.println("Нет такого номера: " + numberRoom);
             return;
         }
         r.setCapacity(capacity);
@@ -112,29 +117,33 @@ public class InMemoryRooms implements Rooms {
 
 
     @Override
-    public void setRoomStars(String number, int stars){
+    public void setRoomStars(String numberRoom, int stars){
         if (stars > 5 || stars < 0){
             System.out.println("Количество звезд у номера не должно превышать 5 или быть меньше 0");
             return;
         }
-        Room r = rooms.get(number);
+        Room r = roomsIds.values().stream()
+                .filter(room -> room.number().equals(numberRoom))
+                .findFirst()
+                .orElse(null);
         if (r == null) {
-            System.out.println("Нет такого номера: " + number);
+            System.out.println("Нет такого номера: " + numberRoom);
             return;
         }
         r.setStars(stars);
     }
-
-
     @Override
     public Room getRoom(String number) {
-        return rooms.get(number);
+        return roomsIds.values().stream()
+                .filter(r -> r.number().equals(number))
+                .findFirst()
+                .orElse(null);
     }
 
-
+    // исправить
     @Override
-    public boolean isRoomBookable(String number) {
-        Room r = rooms.get(number);
+    public boolean isRoomBookable(int id) {
+        Room r = roomsIds.get(id);
         return r != null && r.status() != RoomStatus.MAINTENANCE;
     }
 

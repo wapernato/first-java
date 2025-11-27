@@ -7,7 +7,7 @@ import java.util.Objects;
 public final class Room {
     private RoomStatus status;
     private OccupancyStatus occupancyStatus;
-    private int id;
+
 
     private final String number;
 
@@ -16,16 +16,16 @@ public final class Room {
     private int capacity;
 
 
-    public Room(String number, int id) {
-        this.id = id;
+    public Room(String number, int capacity, int stars) {
+
         this.status = RoomStatus.AVAILABLE;
         this.occupancyStatus = OccupancyStatus.VACANT;
-
-        this.number = Objects.requireNonNull(number, "number");
+        this.number = number;
+        //zthis.number = Objects.requireNonNull(number, "number");
 
         this.price = 0.0;
-        this.capacity = 0;
-        this.stars = 0;
+        this.capacity = capacity;
+        this.stars = stars;
     }
 
 

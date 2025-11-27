@@ -4,13 +4,13 @@ package com.senla.service.impl;
 import com.senla.service.ServiceCatalog;
 
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class InMemoryServiceCatalog implements ServiceCatalog {
+
+    private int nextId = 1;
+
     public static final class Service {
         private final String name;
         private double price;
@@ -19,25 +19,26 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
         public double price() { return price; }
     }
 
-
-    private final Map<String, Service> services = new LinkedHashMap<>();
+    private final Map<Integer, Service> serviceIds = new HashMap<>();
+    //private final Map<String, Service> services = new HashMap<>();
 
 
     @Override
-    public void addService(String name, double price) {
-        if (name == null || name.isBlank()) {
+    public void addService(String nameService, double price) {
+        if (nameService == null || nameService.isBlank()) {
             System.out.println("Название услуги пустое");
             return;
         }
         if (price < 0) {
-            System.out.println("Цена услуги не может быть отрицательной: " + price);
+            System.out.println("Цена услуги не может быть отрицательной цены: " + price);
             return;
         }
-        if (services.containsKey(name)) {
-            System.out.println("Услуга уже существует: " + name);
+        if (serviceIds.values().stream().anyMatch(s -> s.name.equalsIgnoreCase(nameService))) {
+            System.out.println("Услуга уже существует: " + nameService);
             return;
         }
-        services.put(name, new Service(name, price));
+        int id = nextId++;
+        serviceIds.put(id, new Service(nameService, price));
     }
 
 
@@ -47,12 +48,12 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
             System.out.println("Цена услуги не может быть отрицательной: " + price);
             return;
         }
-        Service s = services.get(name);
-        if (s == null) {
+        boolean serviceAvailability = serviceIds.values().stream().anyMatch(s -> s.name.contains(name));
+        if (serviceAvailability) {
             System.out.println("Нет такой услуги: " + name);
             return;
         }
-        s.price = price;
+        serviceIds.values().stream().
     }
 
 
