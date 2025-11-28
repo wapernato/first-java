@@ -5,6 +5,7 @@ import com.senla.service.ServiceCatalog;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class InMemoryServiceCatalog implements ServiceCatalog {
@@ -12,15 +13,17 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
     private int nextId = 1;
 
     public static final class Service {
+
         private final String name;
         private double price;
         public Service(String name, double price) { this.name = name; this.price = price; }
-        public String name() { return name; }
+        public String getName() { return name; }
+        public double getPrice() { return price; }
         public double price() { return price; }
+        public void setPrice(double price) { this.price = price; }
     }
 
     private final Map<Integer, Service> serviceIds = new HashMap<>();
-    //private final Map<String, Service> services = new HashMap<>();
 
 
     @Override
@@ -48,24 +51,41 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
             System.out.println("Цена услуги не может быть отрицательной: " + price);
             return;
         }
-        boolean serviceAvailability = serviceIds.values().stream().anyMatch(s -> s.name.contains(name));
-        if (serviceAvailability) {
+
+        Service service = serviceIds.values().stream()
+                .filter(s -> s.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+
+        if (service == null) {
             System.out.println("Нет такой услуги: " + name);
             return;
         }
-        serviceIds.values().stream().
+
+        service.setPrice(price);
     }
 
 
     @Override
     public Set<String> listServiceNames() {
-        return Collections.unmodifiableSet(services.keySet());
+        return serviceIds.values().stream()
+                .map(Service::getName)
+                .filter(n -> n != null && !n.isEmpty())
+                .collect(Collectors.toSet());
     }
 
 
+
     @Override
-    public double getServicePrice(String name) {
-        Service s = services.get(name);
-        return (s == null) ? -1 : s.price;
+    public double getServicePrice(String nameService) {
+        return serviceIds.values().stream()
+                .filter(s -> s.getName() != null && s.getName().equalsIgnoreCase(nameService))
+                .mapToDouble(Service::price)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Нет такой услуги: " + nameService));
+    }
+
+    public Set<Integer> getServicesId(){
+        return serviceIds.keySet();
     }
 }

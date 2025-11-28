@@ -55,7 +55,7 @@ public class AppDemoControllerService {
             }
 
 
-            catalog.addService(service, price);
+            catalog.addService(service.toLowerCase(), price);
             view.showMessage("Услуга \"" + service + "\" добавлена в каталог. Цена: " + price + " у.е.");
 
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class AppDemoControllerService {
                     view.showMessage("Команда назад выполнена");
                     return;
                 }
-                if (catalog.listServiceNames().contains(service)) {
+                if (catalog.listServiceNames().contains(service.toLowerCase())) {
                     view.showMessage("Услуга \"" + service + "\" есть в каталоге.");
                     break;
                 } else {

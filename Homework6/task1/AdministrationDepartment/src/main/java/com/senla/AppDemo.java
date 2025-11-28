@@ -20,7 +20,7 @@ public class AppDemo {
         ServiceCatalog catalog = new InMemoryServiceCatalog();
         ServiceUsageRegistry usage = new InMemoryServiceUsageRegistry();
         AppDemoView view = new AppDemoView();
-        WorksWithFilesImport importt = new ImportFiles(rooms, guests);
+        WorksWithFilesImport importt = new ImportFiles(rooms, guests, catalog);
         WorksWithFilesExport export = new ExportFiles(rooms, guests, catalog);
 
         AppDemoControllerExport exportController = new AppDemoControllerExport(rooms, guests, sorter, catalog, usage, view, export);

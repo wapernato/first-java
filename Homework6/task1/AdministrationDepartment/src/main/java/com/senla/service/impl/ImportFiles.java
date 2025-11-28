@@ -14,16 +14,19 @@ import java.util.Locale;
 
 import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
+import com.senla.service.ServiceCatalog;
 import com.senla.service.WorksWithFilesImport;
 
 public class ImportFiles implements WorksWithFilesImport {
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private final Rooms rooms;
     private final GuestRegistry guest;
+    private final ServiceCatalog catalog;
 
-    public ImportFiles(Rooms rooms, GuestRegistry guest) {
+    public ImportFiles(Rooms rooms, GuestRegistry guest, ServiceCatalog catalog) {
         this.rooms = rooms;
         this.guest = guest;
+        this.catalog = catalog;
     }
 
     public void importGuest(Path path){
@@ -43,7 +46,9 @@ public class ImportFiles implements WorksWithFilesImport {
                 }
                 else {
                     guest.addHuman(number, name, date, nights);
+
                 }
+
             }
         }catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
@@ -60,12 +65,19 @@ public class ImportFiles implements WorksWithFilesImport {
             while ((line = read.readLine()) != null) {
                 String[] str = line.split("\\s*[,;]\\s*");
 
-                String numer = str[0];
+                String number = str[0];
                 int capacity = Integer.parseInt(str[1]);
                 int stars = Integer.parseInt(str[2]);
-                int id = Integer.parseInt(str[3]); // пока не используется
+                int id = Integer.parseInt(str[3]);
+                if(rooms.getRoomId().contains(id)){
+                    System.out.println("Данная комната уже есть в отеле, поэтому перезапишем данные");
+                    rooms.setRoomStars(number, stars);
+                    rooms.setRoomCapacity(number, capacity);
+                }
+                else {
+                    rooms.addRoom(number, capacity, stars);
 
-                rooms.addRoom(numer, capacity, stars);
+                }
             }
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
@@ -84,6 +96,16 @@ public class ImportFiles implements WorksWithFilesImport {
                 String[] str = line.split("\\s*,\\s*");
                 String nameService = str[0];
                 int price = Integer.parseInt(str[1]);
+                int id = Integer.parseInt(str[2]);
+
+                if(catalog.getServicesId().contains(id)){
+                    System.out.println("Данный сервис уже есть в отеле, поэтому перезапишем данные");
+                    catalog.setServicePrice(nameService, price);
+                }
+                else {
+                    catalog.addService(nameService, price);
+                }
+
             }
         }catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
