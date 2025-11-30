@@ -222,15 +222,6 @@ public class InMemoryGuestRegistry implements GuestRegistry {
 
 
 
-
-
-
-    // ================================================================================================================
-
-
-
-    // реализовать
-
     @Override
     public List<GuestRegistry.GuestEntry> countGuestOfRoom(String roomId,Integer roomsHistoryLimit){
 
