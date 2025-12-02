@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import com.senla.service.GuestRegistry;
@@ -30,27 +31,41 @@ public class ImportFiles implements WorksWithFilesImport {
     }
 
     public void importGuest(Path path){
-        try (BufferedReader read = Files.newBufferedReader(path)) {
-            String line;
-            while ((line = read.readLine()) != null) {
-                String[] str = line.split("\\s*[,;]\\s*");
+        try {
 
-                String number = str[0];
-                String name = str[1];
-                LocalDate date = LocalDate.parse(str[2], fmt);
-                int nights = Integer.parseInt(str[3]);
-                int id = Integer.parseInt(str[4]);
-                if(guest.getGuestId().contains(id)){
-                    System.out.println("Данный гость уже есть в отеле, поэтому перезапишем данные");
-                    guest.setGuestStats(number, name, date, date.plusDays(nights), id);
+            long lines = Files.lines(path).count();
+
+            if (lines <= rooms.countCapacity()) {
+
+                try (BufferedReader read = Files.newBufferedReader(path)) {
+                    String line;
+                    while ((line = read.readLine()) != null) {
+                        String[] str = line.split("\\s*[,;]\\s*");
+                        LocalDate today = LocalDate.now();
+                        String number = str[0];
+                        String name = str[1];
+                        LocalDate date = LocalDate.parse(str[2], fmt);
+                        int nights = Integer.parseInt(str[3]);
+                        int id = Integer.parseInt(str[4]);
+
+                        if (!date.isBefore(today)) {
+                            if (guest.getGuestId().contains(id)) {
+                                System.out.println("Данный гость уже есть в отеле, поэтому перезапишем данные");
+                                guest.setGuestStats(number, name, date, date.plusDays(nights), id);
+                            } else {
+                                guest.addHuman(number, name, date, nights);
+                                System.out.println("Добавил гостя: " + name + " в номер: " + number);
+                            }
+                        } else {
+                            System.out.println("Дата должна быть раньше " + today); // или логику переделать
+                        }
+                    }
                 }
-                else {
-                    guest.addHuman(number, name, date, nights);
-
-                }
-
+            } else {
+                System.out.println("В отеле нету мест для такого количества гостей");
             }
-        }catch (IOException e) {
+
+        } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
             throw new RuntimeException(e);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
@@ -62,23 +77,26 @@ public class ImportFiles implements WorksWithFilesImport {
     public void importRooms(Path path) {
         try (BufferedReader read = Files.newBufferedReader(path)) {
             String line;
+
             while ((line = read.readLine()) != null) {
                 String[] str = line.split("\\s*[,;]\\s*");
 
                 String number = str[0];
                 int capacity = Integer.parseInt(str[1]);
                 int stars = Integer.parseInt(str[2]);
-                int id = Integer.parseInt(str[3]);
-                if(rooms.getRoomId().contains(id)){
-                    System.out.println("Данная комната уже есть в отеле, поэтому перезапишем данные");
-                    rooms.setRoomStars(number, stars);
-                    rooms.setRoomCapacity(number, capacity);
-                }
-                else {
-                    rooms.addRoom(number, capacity, stars);
+                int price = Integer.parseInt(str[3]);
+                int id = Integer.parseInt(str[4]);
+
+                    if (rooms.getRoomId().contains(id)) {
+                        System.out.println("Данная комната уже есть в отеле, поэтому перезапишем данные");
+                        rooms.setRoomStars(number, stars);
+                        rooms.setRoomCapacity(number, capacity);
+                    } else {
+                        rooms.addRoom(number, capacity, stars, price);
+                        System.out.println("Комната: " + number + " - добавлена");
+                    }
 
                 }
-            }
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
             throw new RuntimeException(e);
@@ -104,6 +122,7 @@ public class ImportFiles implements WorksWithFilesImport {
                 }
                 else {
                     catalog.addService(nameService, price);
+                    System.out.println("Услуга: " + nameService + " - добавлена в отель");
                 }
 
             }

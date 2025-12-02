@@ -57,32 +57,32 @@ public class AppDemoControllerImport {
         }
     }
 
-    public void guestImport(){
-        view.showMessage("\n=== Импорт гостей ===\n");
-        try {
-            Path path;
-            while (true) {
-                path = view.askPath("Введите путь до файла ");
-                if (!Files.exists(path)) {
-                    throw new IllegalArgumentException("Файл не найден: " + path);
-                }
+    public void guestImport() {
 
-                if (!Files.isRegularFile(path)) {
-                    throw new IllegalArgumentException("Это не файл, а папка: " + path);
+            view.showMessage("\n=== Импорт гостей ===\n");
+            try {
+                Path path;
+                while (true) {
+                    path = view.askPath("Введите путь до файла ");
+                    if (!Files.exists(path)) {
+                        throw new IllegalArgumentException("Файл не найден: " + path);
+                    }
+
+                    if (!Files.isRegularFile(path)) {
+                        throw new IllegalArgumentException("Это не файл, а папка: " + path);
+                    }
+                    String fileName = path.getFileName().toString().toLowerCase();
+                    if (!fileName.endsWith(".csv")) {
+                        throw new IllegalArgumentException("Это не .csv формат: " + path);
+                    }
+                    importt.importGuest(path);
+                    return;
                 }
-                String fileName = path.getFileName().toString().toLowerCase();
-                if (!fileName.endsWith(".csv")) {
-                    throw new IllegalArgumentException("Это не .csv формат: " + path);
-                }
-                importt.importGuest(path);
-                return;
+            } catch (Exception e) {
+                System.out.println("Error");
+                throw new RuntimeException(e);
             }
         }
-        catch (Exception e) {
-            System.out.println("Error");
-            throw new RuntimeException(e);
-        }
-    }
 
     public void serviceImport(){
         view.showMessage("\n=== Импорт сервисов ===\n");

@@ -96,6 +96,11 @@ public class InMemoryGuestRegistry implements GuestRegistry {
             System.out.println("Нет такого номера: " + roomId);
             return;
         }
+        LocalDate today = LocalDate.now();
+        if(!checkIn.isBefore(today)){
+            System.out.println("Дата должны быть раньше: " + today);
+            return;
+        }
         if (nights <= 0) {
             System.out.println("Количество ночей должно быть > 0");
             return;
@@ -264,10 +269,13 @@ public class InMemoryGuestRegistry implements GuestRegistry {
     }
 
 
-    // добавить проверки
     @Override
     public void setGuestStats(String newRoomNumber, String guest, LocalDate start, LocalDate end, int id) {
-
+        LocalDate today = LocalDate.now();
+        if(!start.isBefore(today)){
+            System.out.println("Дата должны быть раньше: " + today);
+            return;
+        }
         Stay old = staysById.get(id);
         if (old != null) {
             removeStayIdFromRoomIndex(old.roomId, id);

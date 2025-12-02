@@ -40,7 +40,7 @@ public class InMemoryRooms implements Rooms {
 
 
     @Override
-    public void addRoom(String number, int capacity, int stars) {
+    public void addRoom(String number, int capacity, int stars, int price) {
         if (getRoomsNumbers().contains(number)) {
             System.out.println("Номер уже существует: " + number);
             return;
@@ -53,12 +53,25 @@ public class InMemoryRooms implements Rooms {
             System.out.println("Количество звезд у номера не должно превышать 5 или быть меньше 0");
             return;
         }
+        if(price < 0){
+            System.out.println("Цена комнаты не может быть отрицательна или равна нулю");
+            return;
+        }
         int id = nextId++;
 
-        Room r = new Room(number, capacity, stars);
+        Room r = new Room(number, capacity, stars, price);
         roomsIds.put(id, r);
     }
 
+    public int countCapacity(){
+        List<Integer> capacity = roomsIds.values().stream()
+                .map(Room::capacity)
+                .toList();
+
+        return capacity.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
 
 
     @Override

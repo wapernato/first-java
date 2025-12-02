@@ -16,14 +16,14 @@ public final class Room {
     private int capacity;
 
 
-    public Room(String number, int capacity, int stars) {
+    public Room(String number, int capacity, int stars, int price) {
 
         this.status = RoomStatus.AVAILABLE;
         this.occupancyStatus = OccupancyStatus.VACANT;
         this.number = number;
-        //zthis.number = Objects.requireNonNull(number, "number");
+        //this.number = Objects.requireNonNull(number, "number");
 
-        this.price = 0.0;
+        this.price = price;
         this.capacity = capacity;
         this.stars = stars;
     }

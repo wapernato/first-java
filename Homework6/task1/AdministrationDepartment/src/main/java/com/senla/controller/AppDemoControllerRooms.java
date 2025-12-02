@@ -79,11 +79,22 @@ public class AppDemoControllerRooms {
                     view.showMessage("Количество звёзд должно быть от 1 до 5. Попробуйте ещё раз.");
                 }
             }
+            int price;
+                while (true) {
+                    price = view.askInt(
+                            "Введите цену комнаты: (> 0)"
+                    );
+                    if (price > 0) {
+                        break;
+                    } else {
+                        view.showMessage("Цена комнаты не должна быть отрицательной или должна быть больше 0");
+                    }
+                }
 
-            rooms.addRoom(number, capacity, stars);
+            rooms.addRoom(number, capacity, stars, price);
             view.showMessage("Комната №" + number +
                     " успешно добавлена. Вместимость: " + capacity +
-                    ", звёзд: " + stars + ".");
+                    ", звёзд: " + stars + ", цена: " + price + ".");
 
         } catch (Exception e) {
             view.showError("При добавлении комнаты произошла непредвиденная ошибка. " +
