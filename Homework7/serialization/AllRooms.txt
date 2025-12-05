@@ -1,0 +1,1 @@
+{"1":{"number":"101","capacity":3,"stars":5,"price":5000.0,"status":"AVAILABLE","occupancyStatus":"VACANT"}}
