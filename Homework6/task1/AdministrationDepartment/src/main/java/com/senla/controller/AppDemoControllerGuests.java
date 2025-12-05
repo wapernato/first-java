@@ -106,9 +106,7 @@ public class AppDemoControllerGuests {
 
                 view.showMessage(message);
             }
-            else {
-                view.showMessage("Не получилось добавить. Причина в комнате нету свободных мест.");
-            }
+
         } catch (Exception e) {
             view.showError("При добавлении гостя произошла непредвиденная ошибка. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
@@ -126,7 +124,7 @@ public class AppDemoControllerGuests {
     public void computeRoomCharge() {
         view.showMessage("\n=== Расчёт стоимости проживания гостя ===");
         try {
-            // НЕ РАБОТАЕТ ===============================================================================================
+
 
             String number;
             while (true) {
