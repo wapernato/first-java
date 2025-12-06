@@ -19,7 +19,7 @@ public interface Rooms {
     Set<Integer> getRoomId();
 
     //List<String> freeRooms();
-    void addRoom(String number, int capacity, int stars, int price);
+    void addRoom(String number, int capacity, int stars, double price);
     int countCapacity();
     int count();
 

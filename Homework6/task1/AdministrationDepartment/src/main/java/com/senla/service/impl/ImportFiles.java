@@ -67,10 +67,13 @@ public class ImportFiles implements WorksWithFilesImport {
 
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
-            throw new RuntimeException(e);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            System.out.println("Некорректный формат данных в файле: " + path);
-            throw new RuntimeException(e);
+            return;
+        }catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Отсутствуют данные для импорта, либо их излишне");
+            return;
+        }catch (RuntimeException e) {
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 
@@ -84,7 +87,7 @@ public class ImportFiles implements WorksWithFilesImport {
                 String number = str[0];
                 int capacity = Integer.parseInt(str[1]);
                 int stars = Integer.parseInt(str[2]);
-                int price = Integer.parseInt(str[3]);
+                double price = Double.parseDouble(str[3]);
                 int id = Integer.parseInt(str[4]);
 
                     if (rooms.getRoomId().contains(id)) {
@@ -99,10 +102,13 @@ public class ImportFiles implements WorksWithFilesImport {
                 }
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
-            throw new RuntimeException(e);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            System.out.println("Некорректный формат данных в файле: " + path);
-            throw new RuntimeException(e);
+            return;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Отсутствуют данные для импорта, либо их излишне");
+            return;
+        } catch(RuntimeException e){
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 
@@ -113,7 +119,7 @@ public class ImportFiles implements WorksWithFilesImport {
             while ((line = read.readLine()) != null){
                 String[] str = line.split("\\s*,\\s*");
                 String nameService = str[0];
-                int price = Integer.parseInt(str[1]);
+                double price = Double.parseDouble(str[1]);
                 int id = Integer.parseInt(str[2]);
 
                 if(catalog.getServicesId().contains(id)){
@@ -128,10 +134,13 @@ public class ImportFiles implements WorksWithFilesImport {
             }
         }catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + path);
-            throw new RuntimeException(e);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            System.out.println("Некорректный формат данных в файле: " + path);
-            throw new RuntimeException(e);
+            return;
+        }catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Отсутствуют данные для импорта, либо их излишне");
+            return;
+        } catch(RuntimeException e){
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 

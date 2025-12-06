@@ -2,6 +2,8 @@ package com.senla.controller;
 
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
+
+import java.io.IOException;
 import java.nio.file.*;
 
 
@@ -51,9 +53,12 @@ public class AppDemoControllerImport {
                 return;
             }
         }
-        catch (Exception e) {
-            System.out.println("Error");
-            throw new RuntimeException(e);
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Отсутствуют данные для импорта, либо их излишне");
+            return;
+        } catch(RuntimeException e){
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 
@@ -78,9 +83,12 @@ public class AppDemoControllerImport {
                     importt.importGuest(path);
                     return;
                 }
-            } catch (Exception e) {
-                System.out.println("Error");
-                throw new RuntimeException(e);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Ты обращаешься к элементу массива по индексу, которого не существует");
+                return;
+            } catch(RuntimeException e){
+                System.out.println("Неверный формат введенных данных");
+                return;
             }
         }
 
@@ -109,9 +117,12 @@ public class AppDemoControllerImport {
                 return;
             }
         }
-        catch (Exception e) {
-            System.out.println("Error");
-            throw new RuntimeException(e);
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Ты обращаешься к элементу массива по индексу, которого не существует");
+            return;
+        } catch(RuntimeException e){
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 }

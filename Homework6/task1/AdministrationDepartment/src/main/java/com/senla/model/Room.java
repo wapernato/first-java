@@ -16,7 +16,7 @@ public final class Room {
     private int capacity;
 
 
-    public Room(String number, int capacity, int stars, int price) {
+    public Room(String number, int capacity, int stars, double price) {
 
         this.status = RoomStatus.AVAILABLE;
         this.occupancyStatus = OccupancyStatus.VACANT;

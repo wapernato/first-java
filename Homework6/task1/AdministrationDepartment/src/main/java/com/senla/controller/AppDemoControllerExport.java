@@ -3,6 +3,7 @@ package com.senla.controller;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -31,7 +32,7 @@ public class AppDemoControllerExport {
         this.exportt = exportt;
     }
 
-    // === ЭКСПОРТ КОМНАТ ===
+
     public void roomsExport() {
         view.showMessage("\n=== Экспорт комнат ===\n");
         try {
@@ -59,14 +60,16 @@ public class AppDemoControllerExport {
                 view.showMessage("Экспорт комнат завершён: " + path + "\n");
                 return;
             }
-        } catch (Exception e) {
-            System.out.println("Error");
+        } catch (RuntimeException e) {
+            System.out.println("Неверный формат данных");
+            return;
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    // === ЭКСПОРТ ГОСТЕЙ ===
+
     public void guestExport() {
         view.showMessage("\n=== Экспорт гостей ===\n");
         try {
@@ -93,20 +96,22 @@ public class AppDemoControllerExport {
                 view.showMessage("Экспорт гостей завершён: " + path + "\n");
                 return;
             }
-        } catch (Exception e) {
-            System.out.println("Error");
+        } catch (RuntimeException e) {
+            System.out.println("Неверный формат данных");
+            return;
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
-    // === ЭКСПОРТ СЕРВИСОВ ===
     public void serviceExport() {
         view.showMessage("\n=== Экспорт сервисов ===\n");
         try {
             Path path;
             while (true) {
                 path = view.askPath("Введите путь для сохранения файла (.csv) или 0 для возврата: ");
-                // если у тебя уже реализована логика "0 для возврата" в commandBackPath — можно сделать так же, как в импортe
+
                 if (view.commandBackPath(path)) {
                     view.showMessage("Вы вернулись назад");
                     return;
@@ -131,9 +136,12 @@ public class AppDemoControllerExport {
                 view.showMessage("Экспорт сервисов завершён: " + path + "\n");
                 return;
             }
-        } catch (Exception e) {
-            System.out.println("Error");
+        } catch (RuntimeException e) {
+            System.out.println("Неверный формат данных");
+            return;
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 }

@@ -52,10 +52,6 @@ public class AppDemo {
                     case "4", "работа с деталями комнат" -> controllersMenu.menuDetails();
                     case "5", "импорт" ->  controllersMenu.menuImport();
                     case "6", "экспорт" -> controllersMenu.menuExport();
-                    case "123" -> System.out.println(rooms.countCapacity());
-                    //                        case "123" -> guests.getRoomId();
-                    //                        case "импортировать список гостей" -> controllerGuests.guestImport(); // 20
-                    //                        case "импортировать список комнат" -> controllerRooms.roomsImport(); // 21
 
                     case "help", "помощь" -> view.help();
 

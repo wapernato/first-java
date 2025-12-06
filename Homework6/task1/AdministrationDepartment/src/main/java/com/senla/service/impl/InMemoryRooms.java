@@ -40,7 +40,7 @@ public class InMemoryRooms implements Rooms {
 
 
     @Override
-    public void addRoom(String number, int capacity, int stars, int price) {
+    public void addRoom(String number, int capacity, int stars, double price) {
         if (getRoomsNumbers().contains(number)) {
             System.out.println("Номер уже существует: " + number);
             return;
