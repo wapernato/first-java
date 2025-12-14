@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2da6006d-2bbe-402b-ae3f-78f8a0317082" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/task1.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/AdministrationDepartment.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/artifacts/program.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/my-app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/.idea/senla.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/out/production/senla/com/senla/config.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/src/main/java/com/senla/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/src/main/java/com/senla/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/src/main/java/com/senla/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/src/main/java/com/senla/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/src/main/java/com/senla/.idea/senla.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/src/main/java/com/senla/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/AppDemo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/annotation/ConfigProperty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/AppDemoControllerExport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/AppDemoControllerGuests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/AppDemoControllerImport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/AppDemoControllerRooms.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/AppDemoControllerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/AppDemoControllerSorter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/controller/ControllersMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/AllDeserialization.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationGuestRegistry$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationGuestRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationRooms$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationRooms.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationServiceCatalog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationServiceCatalog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationServiceUsageRegistry$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/deserialization/DeserializationServiceUsageRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/model/Assignment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/model/OccupancyStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/model/Room.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/model/RoomStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/serialization/AllSerialization.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/serialization/SerializationGuestRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/serialization/SerializationRooms.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/serialization/SerializationServiceCatalog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/serialization/SerializationServiceUsageRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/GuestRegistry$GuestEntry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/GuestRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/Rooms$RoomsDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/Rooms.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/ServiceCatalog$Service.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/ServiceCatalog$ServiceDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/ServiceCatalog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/ServiceUsageRegistry$Usage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/ServiceUsageRegistry$UsageDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/ServiceUsageRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/SortStats.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/WorksWithFilesExport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/WorksWithFilesImport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/CheckInSortStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/ExportFiles.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/ImportFiles.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryGuestRegistry$Stay.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryGuestRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryRooms.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryServiceCatalog$Service.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryServiceCatalog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryServiceUsageRegistry$Usage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/service/impl/InMemoryServiceUsageRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../../Homework8/task1/AdministrationDepartment/target/classes/com/senla/view/AppDemoView.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../../../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "wapernato"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/wapernato/first-java",
+    "accountId": "34917b79-2004-41de-9f52-5bd556db4240"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="36qqhWHJipGoYYwjR6b6slGJFyr" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "hw7/Rodion",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2da6006d-2bbe-402b-ae3f-78f8a0317082" name="Changes" comment="" />
+      <created>1765744569068</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1765744569068</updated>
+    </task>
+    <servers />
+  </component>
+</project>
