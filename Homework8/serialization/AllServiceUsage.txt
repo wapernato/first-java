@@ -1,0 +1,1 @@
+{"1":{"guestName":"Анна","serviceName":"спа","date":"2025-12-14","price":3000.0}}
