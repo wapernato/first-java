@@ -1,6 +1,12 @@
 package com.senla;
 
 import com.senla.controller.*;
+import com.senla.deserialization.AllDeserialization;
+import com.senla.deserialization.DeserializationGuestRegistry;
+import com.senla.deserialization.DeserializationRooms;
+import com.senla.deserialization.DeserializationServiceCatalog;
+import com.senla.model.Room;
+import com.senla.serialization.AllSerialization;
 import com.senla.service.*;
 import com.senla.service.impl.*;
 import com.senla.view.AppDemoView;
@@ -16,7 +22,7 @@ public class AppDemo {
 
     public static void main(String[] args) {
         Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("config.properties")) {
+        try (FileInputStream fis = new FileInputStream("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\task1\\AdministrationDepartment\\src\\main\\java\\com\\senla\\config.properties")) {
             props.load(fis);
         } catch (IOException e) {
             System.out.println("Не удалось прочитать config.properties: " + e.getMessage());
@@ -30,15 +36,22 @@ public class AppDemo {
         Integer roomsHistoryLimit = Integer.parseInt(roomsHistoryLimitProperty);
 
         // ====== Инициализация сервисов ======
+        Room room = new Room();
+        InMemoryRooms rooms = new InMemoryRooms();
 
-        Rooms rooms = new InMemoryRooms();
+        //InMemoryGuestRegistry guest = new InMemoryGuestRegistry(rooms);
+
         GuestRegistry guests = new InMemoryGuestRegistry(rooms);
+
         SortStats sorter = new CheckInSortStatus();
         ServiceCatalog catalog = new InMemoryServiceCatalog();
         ServiceUsageRegistry usage = new InMemoryServiceUsageRegistry();
         AppDemoView view = new AppDemoView();
         WorksWithFilesImport importt = new ImportFiles(rooms, guests, catalog);
         WorksWithFilesExport export = new ExportFiles(rooms, guests, catalog);
+
+        AllSerialization allSerialization = new AllSerialization(guests, rooms, catalog, usage);
+        AllDeserialization allDeserialization = new AllDeserialization(guests, rooms, catalog, usage);
 
         AppDemoControllerExport exportController = new AppDemoControllerExport(rooms, guests, sorter, catalog, usage, view, export);
         AppDemoControllerImport importController = new AppDemoControllerImport(rooms, guests, sorter, catalog, usage, view, importt);
@@ -49,6 +62,7 @@ public class AppDemo {
 
         ControllersMenu controllersMenu = new ControllersMenu(controllerRooms, controllerGuests, controllerService, controllerSorter,importController, exportController, view);
 
+        allDeserialization.allDeserialization();
         try ( Scanner sc = new Scanner(System.in) ){
 
             while (true){
@@ -59,8 +73,6 @@ public class AppDemo {
                 if(line.isEmpty()) continue;
 
                 String cmd = line.toLowerCase();
-                // добавить для каждой команды экспорта универсальную проверку
-
 
                 switch (cmd){
                     case "1", "работа с комнатами" -> controllersMenu.menuRooms();
@@ -70,14 +82,11 @@ public class AppDemo {
                     case "5", "импорт" ->  controllersMenu.menuImport();
                     case "6", "экспорт" -> controllersMenu.menuExport();
 
-                    //                        case "123" -> guests.getRoomId();
-                    //                        case "импортировать список гостей" -> controllerGuests.guestImport(); // 20
-                    //                        case "импортировать список комнат" -> controllerRooms.roomsImport(); // 21
-
                     case "help", "помощь" -> view.help();
 
-                    case "выход","exit", "quit", "0" -> {
+                    case "выход", "exit", "quit", "0" -> {
                         System.out.println("Программа завершена.");
+                        allSerialization.serializationAll();
                         return;
                     }
                     default -> System.out.println("Неизвестная команда, попробуйте ещё раз");

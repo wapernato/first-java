@@ -28,7 +28,6 @@ public class ExportFiles implements WorksWithFilesExport {
         this.services = services;
     }
 
-
     @Override
     public void exportGuest(Path path) {
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
@@ -39,7 +38,7 @@ public class ExportFiles implements WorksWithFilesExport {
                 long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
 
                 String line = String.join(",",
-                        e.roomId,
+                        e.number,
                         e.guest,
                         checkIn.format(fmt),
                         String.valueOf(nights),
@@ -51,10 +50,13 @@ public class ExportFiles implements WorksWithFilesExport {
 
         } catch (IOException ex) {
             System.out.println("Ошибка записи файла гостей: " + path);
-            throw new RuntimeException(ex);
+            return;
+        }
+        catch(RuntimeException e){
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
-
 
     @Override
     public void exportRooms(Path path) {
@@ -66,9 +68,10 @@ public class ExportFiles implements WorksWithFilesExport {
                 if (r == null) continue;
 
                 String line = String.join(",",
-                        r.number(),
-                        String.valueOf(r.capacity()),
-                        String.valueOf(r.stars()),
+                        r.getNumber(),
+                        String.valueOf(r.getCapacity()),
+                        String.valueOf(r.getStars()),
+                        String.valueOf(r.getPrice()),
                         String.valueOf(id++)
                 );
                 writer.write(line);
@@ -77,7 +80,14 @@ public class ExportFiles implements WorksWithFilesExport {
 
         } catch (IOException ex) {
             System.out.println("Ошибка записи файла комнат: " + path);
-            throw new RuntimeException(ex);
+            return;
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Ты обращаешься к элементу массива по индексу, которого не существует");
+            return;
+        } catch(RuntimeException e){
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 
@@ -85,17 +95,24 @@ public class ExportFiles implements WorksWithFilesExport {
     public void exportService(Path path) {
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 
+            int id = 1;
+
             for (String name : services.listServiceNames()) {
                 double price = services.getServicePrice(name);
 
-                String line = name + "," + price;
+                String line =  name + "," + price + "," + id;
                 writer.write(line);
                 writer.newLine();
+
+                id++;
             }
 
         } catch (IOException ex) {
             System.out.println("Ошибка записи файла услуг: " + path);
-            throw new RuntimeException(ex);
+            return;
+        } catch (RuntimeException e) {
+            System.out.println("Неверный формат введенных данных");
+            return;
         }
     }
 }

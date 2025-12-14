@@ -34,7 +34,9 @@ public class AppDemoControllerGuests {
 
 
     public void addHuman() {
+
         view.showMessage("\n=== Добавление гостя / бронирование номера ===");
+
         try {
 
             String number;
@@ -42,7 +44,7 @@ public class AppDemoControllerGuests {
                 number = view.askString(
                         "Введите номер комнаты, в которую нужно заселить гостя или 0 для возврата"
                 );
-                if(view.commandBack(number)){
+                if (view.commandBack(number)) {
                     view.showMessage("Вы вернулись назад");
                     return;
                 }
@@ -96,7 +98,7 @@ public class AppDemoControllerGuests {
 
             guests.addHuman(number, name, date, night);
             LocalDate exit = date.plusDays(night);
-            if(guests.getListOfPeople(number).contains(name)) {
+            if (guests.getListOfPeople(number).contains(name)) {
                 String message = """
                         Гость %s
                         Забронировал комнату №%s
@@ -106,15 +108,13 @@ public class AppDemoControllerGuests {
 
                 view.showMessage(message);
             }
-            else {
-                view.showMessage("Не получилось добавить. Причина в комнате нету свободных мест.");
-            }
         } catch (Exception e) {
             view.showError("При добавлении гостя произошла непредвиденная ошибка. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
                     "Технические детали " + e.getMessage());
         }
-    }
+        }
+
 
 
     public void countActiveGuestsToday() {
@@ -126,8 +126,6 @@ public class AppDemoControllerGuests {
     public void computeRoomCharge() {
         view.showMessage("\n=== Расчёт стоимости проживания гостя ===");
         try {
-            // НЕ РАБОТАЕТ ===============================================================================================
-
             String number;
             while (true) {
                 number = view.askString(
@@ -147,11 +145,11 @@ public class AppDemoControllerGuests {
                 name = view.askString(
                         "Введите имя гостя, для которого нужно посчитать стоимость проживания или 0 для возврата"
                 );
-                if(view.commandBack(name)){
+                if (view.commandBack(name)) {
                     view.showMessage("Вы вернулись назад");
                     return;
                 }
-                if (guests.getListOfPeople(number).contains(name)) { // guests.getAllGuestEntries().contains(name)
+                if (guests.getListOfPeople(number).contains(name)) {
                     view.showMessage("Гость \"" + name + "\" найден в списке проживающих.");
                     break;
                 } else {
@@ -160,13 +158,12 @@ public class AppDemoControllerGuests {
                 }
             }
 
+            // Делаем копию имени, которая effectively final
+            String finalName = name;
 
-
-
-
-            double guestService = usage.listByGuest(name)
-                    .stream()
-                    .mapToDouble(u -> u.price)
+            double guestService = usage.getAllServiceUsage().values().stream()
+                    .filter(u -> u.guestName().equalsIgnoreCase(finalName))
+                    .mapToDouble(ServiceUsageRegistry.UsageDto::price)
                     .sum();
 
             double roomCharge = guests.computeRoomCharge(number, name);
@@ -190,6 +187,7 @@ public class AppDemoControllerGuests {
                     "Попробуйте ещё раз.\nТехнические детали " + e.getMessage());
         }
     }
+
 
     public void removePeopleFromRoom() {
         view.showMessage("\n=== Освобождение комнаты ===");

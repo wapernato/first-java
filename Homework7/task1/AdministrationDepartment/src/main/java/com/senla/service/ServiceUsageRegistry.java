@@ -2,17 +2,20 @@ package com.senla.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface ServiceUsageRegistry {
 
+    public int getNextId();
     void addUsage(String guestName, String serviceName, LocalDate date, double priceAtUse);
 
+    void serviceUsageDes(Map<Integer, UsageDto> usageMap);
 
     void addUsageFromCatalog(String guestName, String serviceName, LocalDate date, ServiceCatalog catalog);
 
-
-    List<Usage> listByGuest(String guestName);
-
+    List<String> listByGuest(String guestName);
+    public record UsageDto(String guestName, String serviceName, LocalDate date, double price) {}
+    public Map<Integer, UsageDto> getAllServiceUsage();
 
     final class Usage {
         public final String guestName;
@@ -28,4 +31,6 @@ public interface ServiceUsageRegistry {
         }
         @Override public String toString() {  return date + " — " + serviceName + " — " + price;  }
     }
+
+    Integer setNextId(Integer nextId);
 }

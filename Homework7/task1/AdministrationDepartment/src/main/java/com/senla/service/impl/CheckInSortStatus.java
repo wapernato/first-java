@@ -16,13 +16,13 @@ public class CheckInSortStatus implements SortStats {
             if (r != null) snapshot.add(r);
         }
         snapshot.sort(
-                Comparator.comparingInt(Room::stars).reversed()
+                Comparator.comparingInt(Room::getStars).reversed()
         );
 
 
         for (Room r : snapshot) {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                    r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
 
         }
     }
@@ -34,13 +34,13 @@ public class CheckInSortStatus implements SortStats {
             if (r != null) snapshot.add(r);
         }
         snapshot.sort(
-                Comparator.comparingInt(Room::capacity).reversed()
+                Comparator.comparingInt(Room::getCapacity).reversed()
         );
 
 
         for (Room r : snapshot) {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                    r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
         }
     }
 
@@ -54,12 +54,12 @@ public class CheckInSortStatus implements SortStats {
         }
 
         snapshot.sort(
-                Comparator.comparingDouble(Room::price)
+                Comparator.comparingDouble(Room::getPrice)
         );
 
         for (Room r : snapshot) {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                    r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
         }
     }
     @Override
@@ -71,12 +71,12 @@ public class CheckInSortStatus implements SortStats {
         }
 
         snapshot.sort(
-                Comparator.comparingDouble(Room::stars).reversed()
+                Comparator.comparingDouble(Room::getStars).reversed()
         );
 
         for (Room r : snapshot) {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                    r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
         }
     }
 
@@ -89,12 +89,12 @@ public class CheckInSortStatus implements SortStats {
         }
 
         snapshot.sort(
-                Comparator.comparingDouble(Room::price)
+                Comparator.comparingDouble(Room::getPrice)
         );
 
         for (Room r : snapshot) {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                    r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
         }
     }
 
@@ -106,12 +106,12 @@ public class CheckInSortStatus implements SortStats {
             if (r != null) snapshot.add(r);
         }
         snapshot.sort(
-                Comparator.comparingInt(Room::capacity)
+                Comparator.comparingInt(Room::getCapacity)
         );
 
         for (Room r : snapshot) {
             System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                    r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                    r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
 
         }
     }
@@ -134,7 +134,7 @@ public class CheckInSortStatus implements SortStats {
             return;
         }
         System.out.printf("Комната %s: %d★, вместимость %d, цена %.2f, статус %s%n",
-                r.number(), r.stars(), r.capacity(), r.price(), r.status());
+                r.getNumber(), r.getStars(), r.getCapacity(), r.getPrice(), r.getStatus());
 
         //узнать последних roomsHistoryLimit гостей
 
@@ -147,10 +147,10 @@ public class CheckInSortStatus implements SortStats {
             Room r = rooms.getRoom(n);
             if (r != null) rs.add(r);
         }
-        rs.sort(Comparator.comparingDouble(Room::price));
+        rs.sort(Comparator.comparingDouble(Room::getPrice));
         System.out.println("=== Номера (по цене ↑) ===");
         for (Room r : rs) {
-            System.out.printf(" - комната %s — %.2f%n", r.number(), r.price());
+            System.out.printf(" - комната %s — %.2f%n", r.getNumber(), r.getPrice());
         }
 
         List<String> svc = new ArrayList<>(services.listServiceNames());
@@ -163,21 +163,34 @@ public class CheckInSortStatus implements SortStats {
 
     @Override
     public void printGuestServices(String guestName, ServiceUsageRegistry usage, boolean sortByPrice) {
-        var list = new ArrayList<>(usage.listByGuest(guestName));
+
+        var list = new ArrayList<ServiceUsageRegistry.UsageDto>(
+                usage.getAllServiceUsage().values().stream()
+                        .filter(u -> u.guestName().equalsIgnoreCase(guestName))
+                        .toList()
+        );
+
+        if (list.isEmpty()) {
+            System.out.println("Для гостя " + guestName + " нет использованных услуг.");
+            return;
+        }
+
         if (sortByPrice) {
-            list.sort(Comparator.comparingDouble(u -> u.price));
+            list.sort(Comparator.comparingDouble(ServiceUsageRegistry.UsageDto::price));
             System.out.println("Услуги гостя " + guestName + " (по цене ↑):");
         } else {
-            list.sort(Comparator.comparing(u -> u.date));
+            list.sort(Comparator.comparing(ServiceUsageRegistry.UsageDto::date));
             System.out.println("Услуги гостя " + guestName + " (по дате ↑):");
         }
+
         double sum = 0.0;
         for (var u : list) {
-            sum += u.price;
-            System.out.println(" - " + u.date + " — " + u.serviceName + " — " + u.price);
+            sum += u.price();
+            System.out.println(" - " + u.date() + " — " + u.serviceName() + " — " + u.price());
         }
         System.out.printf("Итого за услуги: %.2f%n", sum);
     }
+
 
     @Override
     public void printLast3GuestsOfRoom(String numberRoom, GuestRegistry guests) {

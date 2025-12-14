@@ -222,6 +222,8 @@ public class AppDemoView {
         System.out.println("4) Работа с деталями комнаты");
         System.out.println("5) Работа с импортом");
         System.out.println("6) Работа с экспортом");
+        System.out.println("7) Сериализировать все данные");
+        System.out.println("8) Десериализировать все данные");
         System.out.println("0) Завершить программу");
         System.out.println("======================================");
         System.out.println();

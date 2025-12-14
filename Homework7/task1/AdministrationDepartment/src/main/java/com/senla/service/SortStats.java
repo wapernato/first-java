@@ -13,7 +13,7 @@ public interface SortStats {
 
     List<GuestRegistry.GuestEntry> sortGuestsByAlphabetThenCheckout(GuestRegistry guests);
 
-    void printRoomDetails(Rooms rooms, String roomId, GuestRegistry guests, Integer roomsHistoryLimit);
+    void printRoomDetails(Rooms rooms, String number, GuestRegistry guests, Integer roomsHistoryLimit);
 
 
 
@@ -21,5 +21,5 @@ public interface SortStats {
 
     void printGuestServices(String guestName, ServiceUsageRegistry usage, boolean sortByPrice);
 
-    void printLast3GuestsOfRoom(String roomId, GuestRegistry guests);
+    void printLast3GuestsOfRoom(String number, GuestRegistry guests);
 }

@@ -12,18 +12,34 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
 
     private int nextId = 1;
 
-    public static final class Service {
+    @Override
+    public void setNextId(int nextId) { this.nextId = nextId; }
+
+    public static class Service {
 
         private final String name;
         private double price;
         public Service(String name, double price) { this.name = name; this.price = price; }
         public String getName() { return name; }
         public double getPrice() { return price; }
-        public double price() { return price; }
         public void setPrice(double price) { this.price = price; }
     }
 
+    public int getNextId() { return nextId; }
     private final Map<Integer, Service> serviceIds = new HashMap<>();
+
+
+    @Override
+    public Map<Integer, ServiceDto> getService() {
+        return serviceIds.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> new ServiceDto(
+                                e.getValue().getName(),
+                                e.getValue().getPrice()
+                        )
+                ));
+    }
 
 
     @Override
@@ -74,17 +90,29 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
                 .collect(Collectors.toSet());
     }
 
-
-
     @Override
     public double getServicePrice(String nameService) {
         return serviceIds.values().stream()
                 .filter(s -> s.getName() != null && s.getName().equalsIgnoreCase(nameService))
-                .mapToDouble(Service::price)
+                .mapToDouble(Service::getPrice)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Нет такой услуги: " + nameService));
     }
 
+    @Override
+    public void addServiceDes(Map<Integer, ServiceDto> allService){
+
+        for(Map.Entry<Integer, ServiceDto> entry : allService.entrySet()){
+            Integer id = entry.getKey();
+            ServiceDto dto = entry.getValue();
+
+            Service service = new Service(dto.name(), dto.price());
+            serviceIds.put(id, service);
+        }
+
+    }
+
+    @Override
     public Set<Integer> getServicesId(){
         return serviceIds.keySet();
     }

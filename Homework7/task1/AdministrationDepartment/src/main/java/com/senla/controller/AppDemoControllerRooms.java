@@ -39,6 +39,7 @@ public class AppDemoControllerRooms {
     public void addRoom() {
         view.showMessage("\n=== Добавление новой комнаты ===\n");
 
+
         try {
 
             int roomNumber;
@@ -50,6 +51,7 @@ public class AppDemoControllerRooms {
                     view.showMessage("Вы вернулись назад");
                     return;
                 }
+                if(!rooms.getRoomsNumbers().contains(numberStr)){
                 try {
                     roomNumber = Integer.parseInt(numberStr);
                     if (roomNumber <= 0) {
@@ -60,7 +62,13 @@ public class AppDemoControllerRooms {
                 } catch (NumberFormatException e) {
                     view.showMessage("Номер комнаты должен быть числом. Попробуйте ещё раз.");
                 }
+                }
+                else {
+                    view.showMessage("Комната уже есть, попробуйте еще раз");
+                    return;
+                }
             }
+
             String number = String.valueOf(roomNumber);
 
 
@@ -87,13 +95,25 @@ public class AppDemoControllerRooms {
                     view.showMessage("Количество звёзд должно быть от 1 до 5. Попробуйте ещё раз.");
                 }
             }
+            int price;
+            while (true) {
+                price = view.askInt(
+                        "Введите цену комнаты: (> 0)"
+                );
+                if (price > 0) {
+                    break;
+                } else {
+                    view.showMessage("Цена комнаты не должна быть отрицательной или должна быть больше 0");
+                }
+            }
 
-            rooms.addRoom(number, capacity, stars);
+            rooms.addRoom(number, capacity, stars, price);
             view.showMessage("Комната №" + number +
                     " успешно добавлена. Вместимость: " + capacity +
-                    ", звёзд: " + stars + ".");
+                    ", звёзд: " + stars + ", цена: " + price + ".");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             view.showError("При добавлении комнаты произошла непредвиденная ошибка. " +
                     "Попробуйте ещё раз или обратитесь к администратору.\n" +
                     "Технические детали: " + e.getMessage());

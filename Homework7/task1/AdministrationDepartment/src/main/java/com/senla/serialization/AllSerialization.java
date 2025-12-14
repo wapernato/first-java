@@ -41,6 +41,6 @@ public class AllSerialization {
         serializationServiceCatalog.serializationGetServiceNextId();
         serializationServiceUsageRegistry.serializationAllServiceUsage();
         serializationServiceUsageRegistry.serializationAllServiceUsageNextId();
-        System.out.println("=== СЕРИАЛИЗАЦИЯ ДАННЫХ ЗАВЕРШЕНА ===");
+        System.out.println("=== СЕРИАЛИЗАЦИЯ ДАННЫХ УСПЕШНА ===");
     }
 }

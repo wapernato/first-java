@@ -3,30 +3,40 @@ package com.senla.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.senla.service.Rooms;
 import com.senla.service.impl.InMemoryRooms;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
+
 public class SerializationRooms {
-    private static final ObjectMapper MAPPER;
 
-    InMemoryRooms room = new InMemoryRooms();
+    private final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+    private final Rooms rooms;
 
-    static {
-        MAPPER = new ObjectMapper();
-        MAPPER.registerModule(new JavaTimeModule());
-        MAPPER.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    public SerializationRooms(Rooms rooms) {
+        this.rooms = rooms;
     }
 
-    private SerializationRooms() {}
-
-    public static String toJson(Object value){
-        try{
-            return MAPPER.writeValueAsString(value);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Ошибка сериализации", e);
+    public void serializationAllRooms() {
+        try (FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllRooms.txt")) {
+            String json = mapper.writeValueAsString(((InMemoryRooms) rooms).getAllRooms());
+            writer.write(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-
+    public void serializationAllRoomsNextId() {
+        try (FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllRoomsNextId.txt")) {
+            String json = mapper.writeValueAsString(rooms.getNextId());
+            writer.write(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
