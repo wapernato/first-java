@@ -1,0 +1,1 @@
+[{"id":1,"guest":"Сергей","number":"101","checkIn":"2025-12-12","checkOut":"2025-12-15"},{"id":3,"guest":"Анна","number":"101","checkIn":"2025-12-12","checkOut":"2025-12-15"},{"id":4,"guest":"Артем","number":"103","checkIn":"2025-12-12","checkOut":"2025-12-15"},{"id":2,"guest":"Игнат","number":"102","checkIn":"2025-12-15","checkOut":"2025-12-18"}]
