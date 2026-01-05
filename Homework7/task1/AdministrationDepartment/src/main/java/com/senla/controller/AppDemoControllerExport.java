@@ -52,22 +52,27 @@ public class AppDemoControllerExport {
 
                 // проверяем, что родительская папка существует
                 Path parent = path.getParent();
-                if (parent != null && !Files.exists(parent)) {
-                    view.showMessage("Файла не было на компьютере, поэтому он был создан. Расположение - " + path);
+                if (parent != null) {
+                    Files.createDirectories(parent);
+                }
+
+                if (!Files.exists(path)) {
                     Files.createFile(path);
+                    view.showMessage("Файл создан: " + path);
                 }
                 exportt.exportRooms(path);
                 view.showMessage("Экспорт комнат завершён: " + path + "\n");
                 return;
             }
         } catch (RuntimeException e) {
-            System.out.println("Неверный формат данных");
+            System.out.println(e.getMessage());
             return;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
+
 
 
     public void guestExport() {
@@ -97,7 +102,7 @@ public class AppDemoControllerExport {
                 return;
             }
         } catch (RuntimeException e) {
-            System.out.println("Неверный формат данных");
+            System.out.println(e.getMessage());
             return;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -137,7 +142,7 @@ public class AppDemoControllerExport {
                 return;
             }
         } catch (RuntimeException e) {
-            System.out.println("Неверный формат данных");
+            System.out.println(e.getMessage());
             return;
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -34,6 +34,7 @@ public class AppDemoControllerImport {
 
     public void roomsImport(){
         view.showMessage("\n=== Импорт комнат ===\n");
+
         try {
             Path path;
             while (true) {
@@ -53,13 +54,11 @@ public class AppDemoControllerImport {
                 return;
             }
         }
-        catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Отсутствуют данные для импорта, либо их излишне");
-            return;
-        } catch(RuntimeException e){
-            System.out.println("Неверный формат введенных данных");
+        catch(RuntimeException e){
+            System.out.println(e.getMessage());
             return;
         }
+
     }
 
     public void guestImport() {
@@ -83,11 +82,8 @@ public class AppDemoControllerImport {
                 importt.importGuest(path);
                 return;
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Ты обращаешься к элементу массива по индексу, которого не существует");
-            return;
         } catch(RuntimeException e){
-            System.out.println("Неверный формат введенных данных");
+            System.out.println(e.getMessage());
             return;
         }
     }
@@ -117,11 +113,8 @@ public class AppDemoControllerImport {
                 return;
             }
         }
-        catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Ты обращаешься к элементу массива по индексу, которого не существует");
-            return;
-        } catch(RuntimeException e){
-            System.out.println("Неверный формат введенных данных");
+        catch(RuntimeException e){
+            System.out.println(e.getMessage());
             return;
         }
     }
