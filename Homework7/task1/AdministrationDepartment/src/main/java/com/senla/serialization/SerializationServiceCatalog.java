@@ -23,7 +23,7 @@ public class SerializationServiceCatalog {
 
 
     public void serializationGetService(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePrice.txt")) {
+        try(FileWriter writer = new FileWriter("GetServicePrice.txt")) {
             String json = mapper.writeValueAsString(catalog.getService());
             writer.write(json);
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class SerializationServiceCatalog {
     }
 
     public void serializationGetServiceNextId(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePriceNextId.txt")) {
+        try(FileWriter writer = new FileWriter("GetServicePriceNextId.txt")) {
             String json = mapper.writeValueAsString(catalog.getNextId());
             writer.write(json);
         } catch (IOException e) {

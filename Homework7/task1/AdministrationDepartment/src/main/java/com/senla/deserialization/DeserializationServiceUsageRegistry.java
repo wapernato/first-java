@@ -24,8 +24,8 @@ public class DeserializationServiceUsageRegistry {
     }
 
     public void desrializationServiceUsageRegestry() {
-        File fileGuest = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsage.txt");
-        File fileIds = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsageNextId.txt");
+        File fileGuest = new File("AllServiceUsage.txt");
+        File fileIds = new File("AllServiceUsageNextId.txt");
         if (fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Map<Integer, ServiceUsageRegistry.UsageDto> usageDto = mapper.readValue(fileGuest, new TypeReference<Map<Integer, ServiceUsageRegistry.UsageDto>>() {

@@ -20,7 +20,7 @@ public class SerializationServiceUsageRegistry {
     }
 
     public void serializationAllServiceUsage(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsage.txt")) {
+        try(FileWriter writer = new FileWriter("AllServiceUsage.txt")) {
             String json = mapper.writeValueAsString(usage.getAllServiceUsage());
             writer.write(json);
         } catch (Exception e) {
@@ -29,7 +29,7 @@ public class SerializationServiceUsageRegistry {
     }
 
     public void serializationAllServiceUsageNextId(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsageNextId.txt")) {
+        try(FileWriter writer = new FileWriter("AllServiceUsageNextId.txt")) {
             String json = mapper.writeValueAsString(usage.getNextId());
             writer.write(json);
         } catch (Exception e) {

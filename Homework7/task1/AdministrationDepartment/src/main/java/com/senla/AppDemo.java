@@ -81,6 +81,8 @@ public class AppDemo {
                     case "4", "работа с деталями комнат" -> controllersMenu.menuDetails();
                     case "5", "импорт" ->  controllersMenu.menuImport();
                     case "6", "экспорт" -> controllersMenu.menuExport();
+                    case "7", "сериализация" -> allSerialization.serializationAll();
+                    case "8", "десериализация" -> allDeserialization.allDeserialization();
 
                     case "help", "помощь" -> view.help();
 

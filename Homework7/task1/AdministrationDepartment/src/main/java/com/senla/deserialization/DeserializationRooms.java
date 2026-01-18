@@ -23,8 +23,8 @@ public class DeserializationRooms {
     }
 
     public void deserializeRooms() {
-        File fileRooms = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllRooms.txt");
-        File fileIds = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllRoomsNextId.txt");
+        File fileRooms = new File("AllRooms.txt");
+        File fileIds = new File("AllRoomsNextId.txt");
         if(fileRooms.exists() && fileRooms.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Integer loadedIds = mapper.readValue(fileIds, Integer.class);

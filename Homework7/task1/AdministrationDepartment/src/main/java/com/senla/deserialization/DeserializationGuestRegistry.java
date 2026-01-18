@@ -25,8 +25,8 @@ public class DeserializationGuestRegistry {
     }
 
     public void deserializeGuest(){
-        File fileGuest = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GuestEntries.txt");
-        File fileIds = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GuestEntriesNextId.txt");
+        File fileGuest = new File("GuestEntries.txt");
+        File fileIds = new File("GuestEntriesNextId.txt");
         if(fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0){
             try {
                 List<GuestRegistry.GuestEntry> entries = mapper.readValue(

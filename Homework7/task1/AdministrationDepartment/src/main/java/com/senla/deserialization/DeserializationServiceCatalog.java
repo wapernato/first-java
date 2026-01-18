@@ -23,8 +23,8 @@ public class DeserializationServiceCatalog {
     }
 
     public void deserializeServiceCatalog() {
-        File fileGuest = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePrice.txt");
-        File fileIds = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePriceNextId.txt");
+        File fileGuest = new File("GetServicePrice.txt");
+        File fileIds = new File("GetServicePriceNextId.txt");
         if (fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Map<Integer, ServiceCatalog.ServiceDto> serviceDtoMap = mapper.readValue(fileGuest, new TypeReference<Map<Integer, ServiceCatalog.ServiceDto>>() {
