@@ -1,5 +1,6 @@
 package com.senla.controller;
 
+import com.senla.annotation.ConfigProperty;
 import com.senla.model.RoomStatus;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
@@ -41,9 +42,9 @@ public class AppDemoControllerRooms {
 
 
         try {
-
             int roomNumber;
             while (true) {
+
                 String numberStr = view.askString(
                         "Введите номер комнаты (целое положительное число, например 101) или 0 для возврата"
                 );

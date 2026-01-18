@@ -1,6 +1,7 @@
 package com.senla.service.impl;
 
 
+import com.senla.annotation.ConfigProperty;
 import com.senla.service.ServiceCatalog;
 
 
@@ -16,7 +17,7 @@ public class InMemoryServiceCatalog implements ServiceCatalog {
     public void setNextId(int nextId) { this.nextId = nextId; }
 
     public static class Service {
-
+        @ConfigProperty
         private final String name;
         private double price;
         public Service(String name, double price) { this.name = name; this.price = price; }

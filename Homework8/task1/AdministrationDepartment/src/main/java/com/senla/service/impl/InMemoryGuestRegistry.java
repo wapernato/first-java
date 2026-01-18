@@ -1,6 +1,7 @@
 
 package com.senla.service.impl;
 
+import com.senla.annotation.ConfigProperty;
 import com.senla.model.OccupancyStatus;
 import com.senla.model.Room;
 import com.senla.service.GuestRegistry;
@@ -12,6 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class InMemoryGuestRegistry implements GuestRegistry {
+
 
     private final Rooms rooms;
 

@@ -3,13 +3,13 @@ package com.senla.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.senla.annotation.ConfigProperty;
 
 public final class Room {
+
     private RoomStatus status;
     private OccupancyStatus occupancyStatus;
-
     private String number;
-
     private double price;
     private int stars;
     private int capacity;

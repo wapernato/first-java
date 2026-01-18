@@ -1,11 +1,13 @@
 package com.senla;
 
+import com.senla.annotation.AutoConfigurer;
 import com.senla.controller.*;
 import com.senla.deserialization.AllDeserialization;
 import com.senla.deserialization.DeserializationGuestRegistry;
 import com.senla.deserialization.DeserializationRooms;
 import com.senla.deserialization.DeserializationServiceCatalog;
 import com.senla.model.Room;
+import com.senla.resources.AppConfig;
 import com.senla.serialization.AllSerialization;
 import com.senla.service.*;
 import com.senla.service.impl.*;
@@ -20,20 +22,18 @@ import java.util.Scanner;
 public class AppDemo {
 
 
-    public static void main(String[] args) {
-        Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\task1\\AdministrationDepartment\\src\\main\\java\\com\\senla\\config.properties")) {
-            props.load(fis);
-        } catch (IOException e) {
-            System.out.println("Не удалось прочитать config.properties: " + e.getMessage());
-            return;
-        }
+    public static void main(String[] args) throws IllegalAccessException {
 
-        String changeStatusProperty = props.getProperty("rooms.status.change");
-        boolean changeStatus = Boolean.parseBoolean(changeStatusProperty);
 
-        String roomsHistoryLimitProperty = props.getProperty("rooms.history.limit");
-        Integer roomsHistoryLimit = Integer.parseInt(roomsHistoryLimitProperty);
+        AutoConfigurer autoConfigurer = new AutoConfigurer();
+        // ==================================================================
+        AppConfig cfg = new AppConfig();
+        new AutoConfigurer().configure(cfg);
+
+        boolean changeStatus = cfg.isChangeStatus();
+        int roomsHistoryLimit = cfg.getRoomsHistoryLimit();
+        // ==================================================================
+
 
         // ====== Инициализация сервисов ======
         Room room = new Room();
@@ -60,7 +60,6 @@ public class AppDemo {
         AppDemoControllerSorter controllerSorter = new AppDemoControllerSorter(rooms, guests, sorter, catalog, usage, view, roomsHistoryLimit);
 
         ControllersMenu controllersMenu = new ControllersMenu(controllerRooms, controllerGuests, controllerService, controllerSorter,importController, exportController, view);
-
         allDeserialization.allDeserialization();
         try ( Scanner sc = new Scanner(System.in) ){
 
@@ -80,6 +79,7 @@ public class AppDemo {
                     case "4", "работа с деталями комнат" -> controllersMenu.menuDetails();
                     case "5", "импорт" ->  controllersMenu.menuImport();
                     case "6", "экспорт" -> controllersMenu.menuExport();
+                    case "test" -> autoConfigurer.configure(guests);
 
                     case "help", "помощь" -> view.help();
 

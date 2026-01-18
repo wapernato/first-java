@@ -3,6 +3,8 @@ package com.senla.annotation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -11,16 +13,15 @@ import java.util.*;
 public class AutoConfigurer {
 
     private final Map<String, Map<String, String>> fileCache = new HashMap<>();
-    private static final String DEFAULT_CONFIG_FILE = "config.properties";
+    private static final String DEFAULT_CONFIG_FILE = "C:\\Users\\wapernato\\CoursesHomework\\Homework8\\task1\\AdministrationDepartment\\src\\main\\java\\com\\senla\\resources\\config.properties";
 
-    public void configure(Object target) throws IllegalAccessException { // нахуя нам throws
+    public void configure(Object target) throws IllegalAccessException {
         Class<?> clazz = target.getClass();
 
 
         for (java.lang.reflect.Field field : clazz.getDeclaredFields()) {
-
             field.setAccessible(true);
-
+            if(Modifier.isFinal(field.getModifiers())) continue;
             if (field.isAnnotationPresent(ConfigProperty.class)) {
                 ConfigProperty ann = field.getAnnotation(ConfigProperty.class);
                 String fileName = ann.configFileName();
@@ -112,32 +113,70 @@ public class AutoConfigurer {
                         field.set(target, valueArray);
                     }
 
+                    else if(List.class.isAssignableFrom(field.getType())){
+                        Class<?> elemType = String.class;
+                        if (ann.type() != void.class && ann.type() != Object.class) {
+                            elemType = ann.type();
+                    } else {
+                         Type gt = field.getGenericType();
+                         if(gt instanceof ParameterizedType pt){
+                             Type arg = pt.getActualTypeArguments()[0];
+                             if (arg instanceof Class<?> c) elemType = c;
+                         }
+                    }
 
+                        Class<?> listType = field.getType();
+                        String[] parts = propertyKeyValue.get(propertyName).trim().split("\\s*,\\s*");
 
+                        List<Object> valueList;
 
+                        if(LinkedList.class.isAssignableFrom(listType)){
+                            valueList = new LinkedList<>();
+                        }
+                        else {
+                            valueList = new ArrayList<>();
+                        }
+
+                        for (String part : parts) {
+                            valueList.add(parseOne(part, elemType));
+                        }
+                        field.set(target, valueList);
+                    }
 
 
                     else if(Set.class.isAssignableFrom(field.getType())) {
+
                         Class<?> elemType = String.class;
-                        Type gt = field.getGenericType();
-                        if (gt instanceof ParameterizedType pt) {
-                            Type arg = pt.getActualTypeArguments()[0];
-                            if (arg instanceof Class<?> c) elemType = c;
-                        }
-                            String[] parts = propertyKeyValue.get(propertyName).trim().split("\\s*,\\s*");
-                            Set<Object> valueSet = new HashSet<>();
-
-                            for (String part : parts) {
-                                valueSet.add(parseOne(part, elemType));
+                        if (ann.type() != void.class && ann.type() != Object.class) {
+                            elemType = ann.type();
+                        } else {
+                            Type gt = field.getGenericType();
+                            if (gt instanceof ParameterizedType pt) {
+                                Type arg = pt.getActualTypeArguments()[0];
+                                if (arg instanceof Class<?> c) elemType = c;
                             }
-                            field.set(target, valueSet);
                         }
 
+                        Class<?> setType = field.getType();
+                        String[] parts = propertyKeyValue.get(propertyName).trim().split("\\s*,\\s*");
 
+                        Set<Object> valueSet;
 
+                        if (SortedSet.class.isAssignableFrom(setType) || NavigableSet.class.isAssignableFrom(setType)) {
+                            valueSet = new TreeSet<>();
+                        }
+                        else if (LinkedHashSet.class.isAssignableFrom(setType)) {
+                            valueSet = new LinkedHashSet<>();
+                        }
+                        else{
+                            valueSet = new HashSet<>();
+                        }
 
-
-
+                        for (String part : parts) {
+                            valueSet.add(parseOne(part, elemType));
+                        }
+                        field.set(target, valueSet);
+                    }
 
                     else if(classType == Integer.class || classType == int.class){
                         String parts = propertyKeyValue.get(propertyName).trim();
@@ -162,6 +201,10 @@ public class AutoConfigurer {
                     else if(classType == String.class){
                         String parts = propertyKeyValue.get(propertyName).trim();
                         field.set(target, parts);
+                    }
+                    else {
+                        String raw = propertyKeyValue.get(propertyName).trim();
+                        field.set(target, parseOne(raw, classType));
                     }
                 }
             }
@@ -190,6 +233,11 @@ public class AutoConfigurer {
 
     private Object parseOne(String s, Class<?> t) {
         s = s.trim();
+        if (t.isEnum()) {
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            Class<? extends Enum> et = (Class<? extends Enum>) t;
+            return Enum.valueOf((Class) et, s);
+        }
         if (t == String.class) return s;
         if (t == Integer.class || t == int.class) return Integer.parseInt(s);
         if (t == Long.class || t == long.class) return Long.parseLong(s);
