@@ -13,6 +13,11 @@ import com.senla.view.AppDemoView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -20,13 +25,36 @@ import java.util.Scanner;
 public class AppDemo {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\task1\\AdministrationDepartment\\src\\main\\java\\com\\senla\\config.properties")) {
-            props.load(fis);
+
+        try (InputStream is = AppDemo.class
+                .getClassLoader()
+                .getResourceAsStream("config/config.properties")) {
+
+            if (is != null) {
+                props.load(is);
+                System.out.println("config.properties успешно загружен из resources");
+                return;
+            }
+
         } catch (IOException e) {
-            System.out.println("Не удалось прочитать config.properties: " + e.getMessage());
-            return;
+            System.out.println("Ошибка чтения config.properties: " + e.getMessage());
+        }
+
+
+        System.out.println("config.properties не найден, создаю новый");
+
+        Path configDir = Paths.get("config");
+        Files.createDirectories(configDir);
+
+        Path configFile = configDir.resolve("config.properties");
+
+        props.setProperty("rooms.status.change", "true");
+        props.setProperty("rooms.history.limit", "100");
+
+        try (OutputStream os = Files.newOutputStream(configFile)) {
+            props.store(os, "Auto-generated config");
         }
 
         String changeStatusProperty = props.getProperty("rooms.status.change");
