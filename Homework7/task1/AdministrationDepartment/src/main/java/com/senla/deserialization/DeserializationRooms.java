@@ -23,8 +23,8 @@ public class DeserializationRooms {
     }
 
     public void deserializeRooms() {
-        File fileRooms = new File("AllRooms.txt");
-        File fileIds = new File("AllRoomsNextId.txt");
+        File fileRooms = new File("src/main/java/com/senla/AllRooms.txt");
+        File fileIds = new File("src/main/java/com/senla/AllRoomsNextId.txt");
         if(fileRooms.exists() && fileRooms.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Integer loadedIds = mapper.readValue(fileIds, Integer.class);

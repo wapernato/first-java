@@ -26,7 +26,7 @@ public class SerializationGuestRegistry {
     }
 
     public void serializeAllGuestEntries() {
-        try(FileWriter writer = new FileWriter("GuestEntries.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/senla/resources/GuestEntries.txt")) {
            String json = mapper.writeValueAsString(guests.getAllGuestEntries());
            writer.write(json);
         } catch (JsonProcessingException e) {
@@ -37,7 +37,7 @@ public class SerializationGuestRegistry {
     }
 
     public void serializeGuestNextId() {
-        try(FileWriter writer = new FileWriter("GuestEntriesNextId.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/senla/resources/GuestEntriesNextId.txt")) {
             String json = mapper.writeValueAsString(guests.getNextId());
             writer.write(json);
         } catch (JsonProcessingException e) {

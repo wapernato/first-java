@@ -25,8 +25,8 @@ public class DeserializationGuestRegistry {
     }
 
     public void deserializeGuest(){
-        File fileGuest = new File("GuestEntries.txt");
-        File fileIds = new File("GuestEntriesNextId.txt");
+        File fileGuest = new File("src/main/java/com/senla/GuestEntries.txt");
+        File fileIds = new File("src/main/java/com/senla/GuestEntriesNextId.txt");
         if(fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0){
             try {
                 List<GuestRegistry.GuestEntry> entries = mapper.readValue(

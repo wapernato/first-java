@@ -23,7 +23,7 @@ public class SerializationRooms {
     }
 
     public void serializationAllRooms() {
-        try (FileWriter writer = new FileWriter("AllRooms.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/java/com/senla/resources/AllRooms.txt")) {
             String json = mapper.writeValueAsString(((InMemoryRooms) rooms).getAllRooms());
             writer.write(json);
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class SerializationRooms {
     }
 
     public void serializationAllRoomsNextId() {
-        try (FileWriter writer = new FileWriter("AllRoomsNextId.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/java/com/senla/resources/AllRoomsNextId.txt")) {
             String json = mapper.writeValueAsString(rooms.getNextId());
             writer.write(json);
         } catch (IOException e) {
