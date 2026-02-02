@@ -1,36 +1,27 @@
 package com.senla.controller;
 
+import com.senla.annotation.Inject;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
 
 import java.util.List;
 
 public class AppDemoControllerSorter {
+    @Inject
+    private Rooms rooms;
+    @Inject
+    private GuestRegistry guests;
+    @Inject
+    private SortStats sorter;
+    @Inject
+    private ServiceCatalog catalog;
+    @Inject
+    private ServiceUsageRegistry usage;
+    @Inject
+    private AppDemoView view;
+    private Integer roomsHistoryLimit;
 
-    private final Rooms rooms;
-    private final GuestRegistry guests;
-    private final SortStats sorter;
-    private final ServiceCatalog catalog;
-    private final ServiceUsageRegistry usage;
-    private final AppDemoView view;
-    private final Integer roomsHistoryLimit;
-
-    public AppDemoControllerSorter(Rooms rooms,
-                                   GuestRegistry guests,
-                                   SortStats sorter,
-                                   ServiceCatalog catalog,
-                                   ServiceUsageRegistry usage,
-                                   AppDemoView view,
-                                   Integer roomsHistoryLimit
-                                   ) {
-        this.rooms = rooms;
-        this.guests = guests;
-        this.sorter = sorter;
-        this.catalog = catalog;
-        this.usage = usage;
-        this.view = view;
-        this.roomsHistoryLimit = roomsHistoryLimit;
-    }
+    public AppDemoControllerSorter() {}
 
 
     public void sortByStats() {

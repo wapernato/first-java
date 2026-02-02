@@ -15,3 +15,4 @@ public @interface ConfigProperty {
     String propertyName() default  ""; // иметь вид ИМЯ_КЛАССА.ИМЯ_ПОЛЯ
     Class<?> type() default void.class; // преобразовывать значение конфигурируемого параметра в текущий тип поля, либо в String, если тип общий
 }
+

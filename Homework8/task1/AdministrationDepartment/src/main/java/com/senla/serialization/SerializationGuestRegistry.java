@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import com.senla.annotation.Inject;
 import com.senla.service.*;
 import com.senla.service.impl.*;
 
@@ -19,14 +20,15 @@ public class SerializationGuestRegistry {
     private final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    private final GuestRegistry guests;
+    @Inject
+    private GuestRegistry guests;
 
-    public SerializationGuestRegistry(GuestRegistry guests) {
-        this.guests = guests;
+    public SerializationGuestRegistry() {
+
     }
 
     public void serializeAllGuestEntries() {
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GuestEntries.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/resources/GuestEntries.txt")) {
            String json = mapper.writeValueAsString(guests.getAllGuestEntries());
            writer.write(json);
         } catch (JsonProcessingException e) {
@@ -37,7 +39,7 @@ public class SerializationGuestRegistry {
     }
 
     public void serializeGuestNextId() {
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GuestEntriesNextId.txt")) {
+        try(FileWriter writer = new FileWriter("main\\java\\com\\resources\\GuestEntriesNextId.txt")) {
             String json = mapper.writeValueAsString(guests.getNextId());
             writer.write(json);
         } catch (JsonProcessingException e) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.senla.annotation.Inject;
 import com.senla.service.ServiceCatalog;
 
 import java.io.File;
@@ -15,16 +16,15 @@ public class DeserializationServiceCatalog {
     ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    @Inject
     private ServiceCatalog catalog;
 
 
-    public DeserializationServiceCatalog(ServiceCatalog catalog){
-        this.catalog = catalog;
-    }
+    public DeserializationServiceCatalog(){}
 
     public void deserializeServiceCatalog() {
-        File fileGuest = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePrice.txt");
-        File fileIds = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePriceNextId.txt");
+        File fileGuest = new File("src/main/java/com/resources/GetServicePrice.txt");
+        File fileIds = new File("src/main/java/com/resources/GetServicePriceNextId.txt");
         if (fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Map<Integer, ServiceCatalog.ServiceDto> serviceDtoMap = mapper.readValue(fileGuest, new TypeReference<Map<Integer, ServiceCatalog.ServiceDto>>() {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.senla.annotation.Inject;
 import com.senla.service.ServiceUsageRegistry;
 
 import java.io.File;
@@ -16,16 +17,14 @@ public class DeserializationServiceUsageRegistry {
     ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
+    @Inject
     private ServiceUsageRegistry usage;
 
-    public DeserializationServiceUsageRegistry(ServiceUsageRegistry usage) {
-        this.usage = usage;
-    }
+    public DeserializationServiceUsageRegistry() {}
 
     public void desrializationServiceUsageRegestry() {
-        File fileGuest = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsage.txt");
-        File fileIds = new File("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsageNextId.txt");
+        File fileGuest = new File("src/main/java/com/resources/AllServiceUsage.txt");
+        File fileIds = new File("src/main/java/com/resources/AllServiceUsageNextId.txt");
         if (fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Map<Integer, ServiceUsageRegistry.UsageDto> usageDto = mapper.readValue(fileGuest, new TypeReference<Map<Integer, ServiceUsageRegistry.UsageDto>>() {

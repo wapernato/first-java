@@ -2,6 +2,7 @@
 package com.senla.service.impl;
 
 import com.senla.annotation.ConfigProperty;
+import com.senla.annotation.Inject;
 import com.senla.model.OccupancyStatus;
 import com.senla.model.Room;
 import com.senla.service.GuestRegistry;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 
 public class InMemoryGuestRegistry implements GuestRegistry {
 
-
-    private final Rooms rooms;
+    @Inject
+    private Rooms rooms;
 
     private final Map<Integer, Stay> staysById = new HashMap<>(); // id - ALLGUESTS
     private final Map<String, List<Integer>> stayIdsByRoom = new HashMap<>();  // number - id
@@ -29,9 +30,7 @@ public class InMemoryGuestRegistry implements GuestRegistry {
     @Override
     public void setNextId(int nextId) {this.nextId = nextId; }
 
-    public InMemoryGuestRegistry(Rooms rooms) {
-        this.rooms = rooms;
-    }
+    public InMemoryGuestRegistry() {}
 
     public static class Stay {
         private final String number;

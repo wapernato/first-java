@@ -1,5 +1,6 @@
 package com.senla.controller;
 
+import com.senla.annotation.Inject;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
 
@@ -7,27 +8,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class AppDemoControllerService {
+    @Inject
+    private Rooms rooms;
+    @Inject
+    private GuestRegistry guests;
+    @Inject
+    private ServiceCatalog catalog;
+    @Inject
+    private ServiceUsageRegistry usage;
+    @Inject
+    private AppDemoView view;
 
-    private final Rooms rooms;
-    private final GuestRegistry guests;
-    private final SortStats sorter;
-    private final ServiceCatalog catalog;
-    private final ServiceUsageRegistry usage;
-    private final AppDemoView view;
-
-    public AppDemoControllerService(Rooms rooms,
-                                    GuestRegistry guests,
-                                    SortStats sorter,
-                                    ServiceCatalog catalog,
-                                    ServiceUsageRegistry usage,
-                                    AppDemoView view) {
-        this.rooms = rooms;
-        this.guests = guests;
-        this.sorter = sorter;
-        this.catalog = catalog;
-        this.usage = usage;
-        this.view = view;
-    }
+    public AppDemoControllerService() {}
 
 
     public void addService() {

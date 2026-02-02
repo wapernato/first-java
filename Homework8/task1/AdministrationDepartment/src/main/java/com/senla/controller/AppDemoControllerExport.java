@@ -1,5 +1,6 @@
 package com.senla.controller;
 
+import com.senla.annotation.Inject;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
 
@@ -8,29 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class AppDemoControllerExport {
-    private final Rooms rooms;
-    private final GuestRegistry guests;
-    private final SortStats sorter;
-    private final ServiceCatalog catalog;
-    private final ServiceUsageRegistry usage;
-    private final AppDemoView view;
-    private final WorksWithFilesExport exportt;
+    @Inject
+    private AppDemoView view;
+    @Inject
+    private WorksWithFilesExport exportt;
 
-    public AppDemoControllerExport(Rooms rooms,
-                                   GuestRegistry guests,
-                                   SortStats sorter,
-                                   ServiceCatalog catalog,
-                                   ServiceUsageRegistry usage,
-                                   AppDemoView view,
-                                   WorksWithFilesExport exportt) {
-        this.rooms = rooms;
-        this.guests = guests;
-        this.sorter = sorter;
-        this.catalog = catalog;
-        this.usage = usage;
-        this.view = view;
-        this.exportt = exportt;
-    }
+    public AppDemoControllerExport() {}
 
 
     public void roomsExport() {

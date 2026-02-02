@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import com.senla.annotation.Inject;
 import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
 import com.senla.service.ServiceCatalog;
@@ -20,15 +21,14 @@ import com.senla.service.WorksWithFilesImport;
 
 public class ImportFiles implements WorksWithFilesImport {
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    private final Rooms rooms;
-    private final GuestRegistry guest;
-    private final ServiceCatalog catalog;
+    @Inject
+    private Rooms rooms;
+    @Inject
+    private GuestRegistry guest;
+    @Inject
+    private ServiceCatalog catalog;
 
-    public ImportFiles(Rooms rooms, GuestRegistry guest, ServiceCatalog catalog) {
-        this.rooms = rooms;
-        this.guest = guest;
-        this.catalog = catalog;
-    }
+    public ImportFiles(){}
 
     public void importGuest(Path path){
         try {

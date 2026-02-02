@@ -3,6 +3,7 @@ package com.senla.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.senla.annotation.Inject;
 import com.senla.service.GuestRegistry;
 import com.senla.service.ServiceCatalog;
 
@@ -14,16 +15,14 @@ public class SerializationServiceCatalog {
     private final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    private final ServiceCatalog catalog;
+    @Inject
+    private ServiceCatalog catalog;
 
-    public SerializationServiceCatalog(ServiceCatalog catalog) {
-
-        this.catalog = catalog;
-    }
+    public SerializationServiceCatalog() {}
 
 
     public void serializationGetService(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePrice.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/resources/GetServicePrice.txt")) {
             String json = mapper.writeValueAsString(catalog.getService());
             writer.write(json);
         } catch (IOException e) {
@@ -32,7 +31,7 @@ public class SerializationServiceCatalog {
     }
 
     public void serializationGetServiceNextId(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\GetServicePriceNextId.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/resources/GetServicePriceNextId.txt")) {
             String json = mapper.writeValueAsString(catalog.getNextId());
             writer.write(json);
         } catch (IOException e) {

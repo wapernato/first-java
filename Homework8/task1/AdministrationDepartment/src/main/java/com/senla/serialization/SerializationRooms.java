@@ -3,6 +3,7 @@ package com.senla.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.senla.annotation.Inject;
 import com.senla.service.Rooms;
 import com.senla.service.impl.InMemoryRooms;
 
@@ -15,15 +16,13 @@ public class SerializationRooms {
     private final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    @Inject
+    private Rooms rooms;
 
-    private final Rooms rooms;
-
-    public SerializationRooms(Rooms rooms) {
-        this.rooms = rooms;
-    }
+    public SerializationRooms() {}
 
     public void serializationAllRooms() {
-        try (FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllRooms.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/java/com/resources/AllRooms.txt")) {
             String json = mapper.writeValueAsString(((InMemoryRooms) rooms).getAllRooms());
             writer.write(json);
         } catch (IOException e) {
@@ -32,7 +31,7 @@ public class SerializationRooms {
     }
 
     public void serializationAllRoomsNextId() {
-        try (FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllRoomsNextId.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/java/com/resources/AllRoomsNextId.txt")) {
             String json = mapper.writeValueAsString(rooms.getNextId());
             writer.write(json);
         } catch (IOException e) {

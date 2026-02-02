@@ -3,6 +3,7 @@ package com.senla.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.senla.annotation.Inject;
 import com.senla.service.GuestRegistry;
 import com.senla.service.ServiceUsageRegistry;
 
@@ -13,14 +14,13 @@ public class SerializationServiceUsageRegistry {
     private final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    private final ServiceUsageRegistry usage;
+    @Inject
+    private ServiceUsageRegistry usage;
 
-    public SerializationServiceUsageRegistry(ServiceUsageRegistry usage) {
-        this.usage = usage;
-    }
+    public SerializationServiceUsageRegistry() {}
 
     public void serializationAllServiceUsage(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsage.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/resources/AllServiceUsage.txt")) {
             String json = mapper.writeValueAsString(usage.getAllServiceUsage());
             writer.write(json);
         } catch (Exception e) {
@@ -29,7 +29,7 @@ public class SerializationServiceUsageRegistry {
     }
 
     public void serializationAllServiceUsageNextId(){
-        try(FileWriter writer = new FileWriter("C:\\Users\\wapernato\\CoursesHomework\\Homework7\\serialization\\AllServiceUsageNextId.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/java/com/resources/AllServiceUsageNextId.txt")) {
             String json = mapper.writeValueAsString(usage.getNextId());
             writer.write(json);
         } catch (Exception e) {

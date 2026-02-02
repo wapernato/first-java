@@ -1,6 +1,7 @@
 package com.senla.controller;
 
 import com.senla.annotation.ConfigProperty;
+import com.senla.annotation.Inject;
 import com.senla.model.RoomStatus;
 import com.senla.service.*;
 import com.senla.view.AppDemoView;
@@ -11,29 +12,18 @@ import java.time.LocalDate;
 
 public class AppDemoControllerRooms {
 
+    @Inject
+    private Rooms rooms;
+    @Inject
+    private GuestRegistry guests;
+    @Inject
+    private WorksWithFilesImport importt;
+    @Inject
+    private AppDemoView view;
+    private boolean changeStatus;
 
-    private final Rooms rooms;
-    private final GuestRegistry guests;
-    private final WorksWithFilesImport importt;
-    private final AppDemoView view;
-    private final boolean changeStatus;
 
-
-    public AppDemoControllerRooms(Rooms rooms,
-                                  GuestRegistry guests,
-                                  SortStats sorter,
-                                  ServiceCatalog catalog,
-                                  ServiceUsageRegistry usage,
-                                  AppDemoView view,
-                                  WorksWithFilesImport importt,
-                                  boolean changeStatus
-    ) {
-        this.rooms = rooms;
-        this.guests = guests;
-        this.view = view;
-        this.importt = importt;
-        this.changeStatus = changeStatus;
-    }
+    public AppDemoControllerRooms() {}
 
 
 

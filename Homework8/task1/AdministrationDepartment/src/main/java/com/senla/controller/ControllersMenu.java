@@ -1,6 +1,7 @@
 package com.senla.controller;
 
 import com.senla.AppDemo;
+import com.senla.annotation.Inject;
 import com.senla.service.*;
 import com.senla.service.impl.*;
 import com.senla.view.AppDemoView;
@@ -8,29 +9,22 @@ import com.senla.view.AppDemoView;
 import java.util.Scanner;
 
 public class ControllersMenu {
-    private final AppDemoControllerRooms roomsController;
-    private final AppDemoControllerGuests guestsController;
-    private final AppDemoControllerService serviceController;
-    private final AppDemoControllerSorter sorterController;
-    private final AppDemoControllerImport importController;
-    private final AppDemoControllerExport exportController;
-    private final AppDemoView view;
+    @Inject
+    private AppDemoControllerRooms roomsController;
+    @Inject
+    private AppDemoControllerGuests guestsController;
+    @Inject
+    private AppDemoControllerService serviceController;
+    @Inject
+    private AppDemoControllerSorter sorterController;
+    @Inject
+    private AppDemoControllerImport importController;
+    @Inject
+    private AppDemoControllerExport exportController;
+    @Inject
+    private AppDemoView view;
 
-    public ControllersMenu(AppDemoControllerRooms roomsController,
-                           AppDemoControllerGuests guestsController,
-                           AppDemoControllerService serviceController,
-                           AppDemoControllerSorter sorterController,
-                           AppDemoControllerImport importController,
-                           AppDemoControllerExport exportController,
-                           AppDemoView view) {
-        this.roomsController = roomsController;
-        this.guestsController = guestsController;
-        this.serviceController = serviceController;
-        this.sorterController = sorterController;
-        this.importController = importController;
-        this.exportController = exportController;
-        this.view = view;
-    }
+    public ControllersMenu(){}
     public void menuImport(){
         while (true){
             view.helpImport();

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.senla.annotation.Inject;
 import com.senla.model.Room;
 import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
@@ -17,15 +18,14 @@ import com.senla.service.WorksWithFilesExport;
 public class ExportFiles implements WorksWithFilesExport {
 
     private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    @Inject
+    private Rooms rooms;
+    @Inject
+    private GuestRegistry guests;
+    @Inject
+    private ServiceCatalog services;
 
-    private final Rooms rooms;
-    private final GuestRegistry guests;
-    private final ServiceCatalog services;
-
-    public ExportFiles(Rooms rooms, GuestRegistry guests, ServiceCatalog services) {
-        this.rooms = rooms;
-        this.guests = guests;
-        this.services = services;
+    public ExportFiles(){
     }
 
     @Override
