@@ -22,7 +22,7 @@ public class SerializationRooms {
     public SerializationRooms() {}
 
     public void serializationAllRooms() {
-        try (FileWriter writer = new FileWriter("src/main/java/com/resources/AllRooms.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/resources/AllRooms.txt")) {
             String json = mapper.writeValueAsString(((InMemoryRooms) rooms).getAllRooms());
             writer.write(json);
         } catch (IOException e) {
@@ -31,7 +31,7 @@ public class SerializationRooms {
     }
 
     public void serializationAllRoomsNextId() {
-        try (FileWriter writer = new FileWriter("src/main/java/com/resources/AllRoomsNextId.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/resources/AllRoomsNextId.txt")) {
             String json = mapper.writeValueAsString(rooms.getNextId());
             writer.write(json);
         } catch (IOException e) {

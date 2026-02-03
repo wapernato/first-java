@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.*;
-import java.util.Arrays;
+
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -59,10 +59,10 @@ public class AppDemo {
         }
 
 
-        // 1) DI container
+
         DiContainer di = new DiContainer();
 
-        // 2) Config (и кладём готовый инстанс в DI)
+
         AppConfig config = new AppConfig();
         new AutoConfigurer().configure(config);
 

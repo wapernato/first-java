@@ -28,7 +28,7 @@ public class SerializationGuestRegistry {
     }
 
     public void serializeAllGuestEntries() {
-        try(FileWriter writer = new FileWriter("src/main/java/com/resources/GuestEntries.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/resources/GuestEntries.txt")) {
            String json = mapper.writeValueAsString(guests.getAllGuestEntries());
            writer.write(json);
         } catch (JsonProcessingException e) {
@@ -39,7 +39,7 @@ public class SerializationGuestRegistry {
     }
 
     public void serializeGuestNextId() {
-        try(FileWriter writer = new FileWriter("main\\java\\com\\resources\\GuestEntriesNextId.txt")) {
+        try(FileWriter writer = new FileWriter("src/main/resources/GuestEntriesNextId.txt")) {
             String json = mapper.writeValueAsString(guests.getNextId());
             writer.write(json);
         } catch (JsonProcessingException e) {

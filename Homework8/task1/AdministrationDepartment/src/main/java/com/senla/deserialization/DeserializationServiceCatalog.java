@@ -16,6 +16,7 @@ public class DeserializationServiceCatalog {
     ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
     @Inject
     private ServiceCatalog catalog;
 
@@ -23,8 +24,8 @@ public class DeserializationServiceCatalog {
     public DeserializationServiceCatalog(){}
 
     public void deserializeServiceCatalog() {
-        File fileGuest = new File("src/main/java/com/resources/GetServicePrice.txt");
-        File fileIds = new File("src/main/java/com/resources/GetServicePriceNextId.txt");
+        File fileGuest = new File("src/main/resources/GetServicePrice.txt");
+        File fileIds = new File("src/main/resources/GetServicePriceNextId.txt");
         if (fileGuest.exists() && fileGuest.length() > 0 && fileIds.exists() && fileIds.length() > 0) {
             try {
                 Map<Integer, ServiceCatalog.ServiceDto> serviceDtoMap = mapper.readValue(fileGuest, new TypeReference<Map<Integer, ServiceCatalog.ServiceDto>>() {
