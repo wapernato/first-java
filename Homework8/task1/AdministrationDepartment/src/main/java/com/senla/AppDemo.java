@@ -23,38 +23,25 @@ public class AppDemo {
     public static void main(String[] args) throws IOException, IllegalAccessException {
 
 
-        Properties props = new Properties();
+
         Path configFile = Paths.get("config", "config.properties");
         Files.createDirectories(configFile.getParent());
 
-        if (Files.exists(configFile)) {
-            try (InputStream is = Files.newInputStream(configFile)) {
-                props.load(is);
-                System.out.println("config.properties загружен с диска: " + configFile.toAbsolutePath());
-            } catch (IOException e) {
-                System.out.println("Ошибка чтения config.properties с диска: " + e.getMessage());
-            }
-        } else {
-            try (InputStream is = AppDemo.class.getClassLoader().getResourceAsStream("config/config.properties")) {
-                if (is != null) {
-                    props.load(is);
-                    System.out.println("config.properties загружен из resources");
+        if (Files.notExists(configFile)) {
+            try (InputStream is = AppDemo.class.getClassLoader()
+                    .getResourceAsStream("config/config.properties")) {
 
-                    try (OutputStream os = Files.newOutputStream(configFile)) {
-                        props.store(os, "Copied from resources");
-                    }
+                if (is != null) {
+                    Files.copy(is, configFile);
                     System.out.println("Дефолтный config.properties скопирован на диск: " + configFile.toAbsolutePath());
                 } else {
-                    props.setProperty("rooms.status.change", "false");
-                    props.setProperty("rooms.history.limit", "2");
-
-                    try (OutputStream os = Files.newOutputStream(configFile)) {
-                        props.store(os, "Auto-generated config");
-                    }
+                    Files.writeString(
+                            configFile,
+                            "rooms.status.change=false\nrooms.history.limit=2\n",
+                            StandardOpenOption.CREATE
+                    );
                     System.out.println("Создан новый config.properties: " + configFile.toAbsolutePath());
                 }
-            } catch (IOException e) {
-                System.out.println("Ошибка чтения config.properties из resources: " + e.getMessage());
             }
         }
 

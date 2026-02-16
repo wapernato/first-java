@@ -7,14 +7,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.Paths;
 import java.util.*;
 
 
 public class AutoConfigurer {
 
     private final Map<String, Map<String, String>> fileCache = new HashMap<>();
-    private static final String DEFAULT_CONFIG_FILE = "C:\\Users\\wapernato\\CoursesHomework\\Homework8\\task1\\AdministrationDepartment\\src\\main\\java\\com\\senla\\resources\\config.properties";
-
+    private static final String DEFAULT_CONFIG_FILE = Paths.get("config","config.properties").toString();
     public void configure(Object target) throws IllegalAccessException {
         Class<?> clazz = target.getClass();
 
