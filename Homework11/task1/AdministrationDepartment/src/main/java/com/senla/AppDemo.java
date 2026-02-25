@@ -22,8 +22,6 @@ public class AppDemo {
 
     public static void main(String[] args) throws IOException, IllegalAccessException {
 
-
-
         Path configFile = Paths.get("config", "config.properties");
         Files.createDirectories(configFile.getParent());
 
@@ -46,20 +44,12 @@ public class AppDemo {
         }
 
 
-
         DiContainer di = new DiContainer();
-
 
         AppConfig config = new AppConfig();
         new AutoConfigurer().configure(config);
 
         di.registerInstance(AppConfig.class, config);
-
-//        System.out.println(config.getPort());
-//        System.out.println(config.getDebug());
-//        System.out.println(config.getName());
-//        System.out.println(Arrays.toString(config.getRatios()));
-//        System.out.println(config.getTags());
 
         // 3) bindings
         di.bind(Rooms.class, InMemoryRooms.class);
