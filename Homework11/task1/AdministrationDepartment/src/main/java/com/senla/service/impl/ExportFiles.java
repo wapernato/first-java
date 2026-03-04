@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import com.senla.annotation.Inject;
-import com.senla.model.Room;
+import com.senla.model.forDAO.Room;
 import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
 import com.senla.service.ServiceCatalog;

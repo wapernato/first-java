@@ -1,10 +1,9 @@
 
 package com.senla.service.impl;
 
-import com.senla.annotation.ConfigProperty;
 import com.senla.annotation.Inject;
 import com.senla.model.OccupancyStatus;
-import com.senla.model.Room;
+import com.senla.model.forDAO.Room;
 import com.senla.service.GuestRegistry;
 import com.senla.service.Rooms;
 

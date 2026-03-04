@@ -2,7 +2,7 @@ package com.senla.service.impl;
 
 
 import com.senla.model.OccupancyStatus;
-import com.senla.model.Room;
+import com.senla.model.forDAO.Room;
 import com.senla.model.RoomStatus;
 import com.senla.service.Rooms;
 

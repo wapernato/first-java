@@ -1,7 +1,5 @@
 package com.senla.service;
-import com.senla.model.Hotel;
-
-import java.util.List;
+import com.senla.model.forDAO.Hotel;
 
 
 public interface HotelService {

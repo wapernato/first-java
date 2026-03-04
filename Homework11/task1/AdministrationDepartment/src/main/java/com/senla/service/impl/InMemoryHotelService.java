@@ -1,10 +1,9 @@
 package com.senla.service.impl;
 
-import com.senla.model.Hotel;
-import com.senla.model.HotelFactory;
+import com.senla.model.forDAO.Hotel;
+import com.senla.model.forDAO.HotelFactory;
 import com.senla.service.HotelService;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 

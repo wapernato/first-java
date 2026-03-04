@@ -2,12 +2,10 @@ package com.senla.service;
 
 
 import com.senla.model.OccupancyStatus;
-import com.senla.model.Room;
+import com.senla.model.forDAO.Room;
 import com.senla.model.RoomStatus;
 
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

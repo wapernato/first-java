@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.senla.annotation.Inject;
-import com.senla.model.Room;
+import com.senla.model.forDAO.Room;
 import com.senla.service.impl.InMemoryRooms;
 
 import java.io.File;
